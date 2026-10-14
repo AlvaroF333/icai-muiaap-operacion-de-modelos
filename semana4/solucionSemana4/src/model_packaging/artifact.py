@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Protocol
 
 import joblib
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from model_packaging.contracts import (
     QualityBand,
@@ -53,6 +53,8 @@ class ArtifactManifest(BaseModel):
     feature_names: tuple[str, ...]
     output_labels: tuple[QualityBand, ...]
     estimator_type: str = Field(min_length=1)
+    
+    @field_validator("schema_version")
 
 
 @dataclass(frozen=True)
@@ -66,7 +68,7 @@ class LoadedModelBundle:
 def create_manifest(
     estimator: WineQualityEstimator, model_version: str
 ) -> ArtifactManifest:
-    """Devuelve un manifiesto compatible con el contrato."""
+    """Devuelve un manifiesto (manifest) compatible con el contrato."""
     return ArtifactManifest(
         schema_version=ARTIFACT_SCHEMA_VERSION,
         model_version=model_version,

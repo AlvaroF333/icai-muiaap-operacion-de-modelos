@@ -39,3 +39,9 @@ line-length = 88
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+[tool.uv.workspace]
+members = [
+    "modules/04-model-packaging/exercises/01-model-packaging/01.01-artifact-contract/solution",
+    "solucion-Completa",
+]
