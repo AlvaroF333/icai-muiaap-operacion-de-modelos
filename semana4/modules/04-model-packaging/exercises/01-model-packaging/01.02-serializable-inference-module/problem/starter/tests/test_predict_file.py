@@ -86,3 +86,21 @@ def test_predict_file_writes_nothing_when_a_later_row_is_invalid(
         predict_file(input_path, output_path, bundle_path)
 
     assert not output_path.exists()
+
+
+def test_predict_file_rejects_out_of_range_field(tmp_path: Path) -> None:
+    bundle_path = tmp_path / "bundle"
+    input_path = tmp_path / "input.csv"
+    output_path = tmp_path / "predictions.csv"
+    write_bundle(bundle_path)
+    out_of_range_row = {
+        "sample_id": "red-001",
+        **{key: str(value) for key, value in WINE_SAMPLE.items()},
+        "ph": "99.0",  # pH permitido según contrato S3 es [2.5, 4.5]
+    }
+    write_input(input_path, rows=[out_of_range_row])
+
+    with pytest.raises(ValueError):
+        predict_file(input_path, output_path, bundle_path)
+
+    assert not output_path.exists()

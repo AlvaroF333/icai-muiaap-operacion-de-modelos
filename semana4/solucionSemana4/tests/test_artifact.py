@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+import joblib
 import pytest
 from sklearn.dummy import DummyClassifier
 
@@ -58,8 +59,8 @@ def test_save_and_load_bundle_round_trip(tmp_path: Path) -> None:
         "manifest.json",
         "model.joblib",
     ]
-    manifest = json.loads((bundle_path / "manifest.json").read_text())
-    assert manifest["feature_names"] == list(FEATURE_NAMES)
+    manifest_data = json.loads((bundle_path / "manifest.json").read_text())
+    assert manifest_data["feature_names"] == list(FEATURE_NAMES)
     assert prediction.quality_band == "acceptable"
     assert prediction.confidence == 1.0
 
@@ -73,9 +74,9 @@ def test_load_rejects_a_reordered_feature_contract(tmp_path: Path) -> None:
         create_manifest(estimator, "wine-quality-rf-v1"),
     )
     manifest_path = bundle_path / "manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    manifest["feature_names"] = list(reversed(manifest["feature_names"]))
-    manifest_path.write_text(json.dumps(manifest))
+    manifest_data = json.loads(manifest_path.read_text())
+    manifest_data["feature_names"] = list(reversed(manifest_data["feature_names"]))
+    manifest_path.write_text(json.dumps(manifest_data))
 
     with pytest.raises(ValueError):
         load_model_bundle(bundle_path)
@@ -115,3 +116,39 @@ def test_manifest_shape_is_strict() -> None:
                 "unexpected": "not allowed",
             }
         )
+
+
+def test_load_rejects_missing_manifest(tmp_path: Path) -> None:
+    bundle_path = tmp_path / "empty_bundle"
+    bundle_path.mkdir(parents=True, exist_ok=True)
+    with pytest.raises(ValueError, match="No se encuentra el manifiesto"):
+        load_model_bundle(bundle_path)
+
+
+def test_load_rejects_corrupted_manifest(tmp_path: Path) -> None:
+    bundle_path = tmp_path / "corrupted_bundle"
+    bundle_path.mkdir(parents=True, exist_ok=True)
+    manifest_path = bundle_path / "manifest.json"
+    manifest_path.write_text("{invalid-json-content", encoding="utf-8")
+    with pytest.raises(ValueError):
+        load_model_bundle(bundle_path)
+
+
+class IncompleteEstimator:
+    """Estimador sin predict_proba para probar validación de interfaz."""
+
+    def predict(self, features: list[list[float]]) -> list[str]:
+        return ["acceptable"]
+
+
+def test_load_rejects_invalid_estimator_interface(tmp_path: Path) -> None:
+    bundle_path = tmp_path / "bad_estimator_bundle"
+    bundle_path.mkdir(parents=True, exist_ok=True)
+    estimator = make_estimator()
+    manifest = create_manifest(estimator, "test-v1")
+    manifest_path = bundle_path / "manifest.json"
+    manifest_path.write_text(manifest.model_dump_json(indent=2), encoding="utf-8")
+    joblib.dump(IncompleteEstimator(), bundle_path / "model.joblib")
+
+    with pytest.raises(ValueError, match="predict_proba"):
+        load_model_bundle(bundle_path)
