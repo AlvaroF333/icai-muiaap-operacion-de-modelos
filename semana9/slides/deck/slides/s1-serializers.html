@@ -1,0 +1,15 @@
+<section id="s1-serializers" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Decido cómo se escribe cada campo</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;gap:56px;align-items:flex-start">
+<div style="width:960px;background:#2d3539;padding:40px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#ffffff;white-space:nowrap"><span style="color:#f9b800">@field_serializer</span>("confidence")<br><span style="color:#f9b800">def</span> _two_decimals(self, value: float) -&gt; float:<br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">return</span> round(value, 2)<br><br><span style="color:#f9b800">@field_serializer</span>("served_at")<br><span style="color:#f9b800">def</span> _utc_z(self, value: datetime) -&gt; str:<br>&#160;&#160;&#160;&#160;iso = value.astimezone(UTC).isoformat()<br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">return</span> iso.replace("+00:00", "Z")<br><br><span style="color:#f9b800">@computed_field</span><br><span style="color:#f9b800">@property</span><br><span style="color:#f9b800">def</span> is_reliable(self) -&gt; bool: ...</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">Redondeo en el contrato, no en el modelo.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">Escribo las fechas en UTC, ISO 8601 y con Z.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">Uso StrEnum, no str: el esquema lista los valores.</p></div>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">9</p>
+<aside>El modelo devuelve 0.8312377; el consumidor recibe 0.83. Esa decisión es del contrato y se toma una vez, en el esquema público, no en cada predictor. Fechas: una API que mezcla zonas horarias rompe dashboards y logs; UTC con Z elimina la ambigüedad. computed_field añade campos derivados (is_reliable) que también aparecen en OpenAPI. Con un StrEnum, OpenAPI lista needs_review, acceptable y excellent, y el cliente puede generar sus tipos.</aside>
+</section>

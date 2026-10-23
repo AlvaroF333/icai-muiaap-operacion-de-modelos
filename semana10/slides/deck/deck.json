@@ -1,0 +1,38 @@
+{
+  "v": 4,
+  "createdOnFiles": {"v": 1, "at": "2026-10-18T16:06:31Z"},
+  "lists": "css",
+  "title": "Semana 10 · API protegida",
+  "cover": "cover",
+  "order": [
+    "cover", "agenda", "pregunta", "recorrido", "objetivos",
+    "s1", "s1-authn-authz", "s1-mecanismos", "s1-api-key", "s1-reglas", "s1-401",
+    "s2", "s2-scopes", "s2-router-deps", "s2-jwt-anatomia", "s2-jwt-code", "s2-jwt-reglas",
+    "s3", "s3-frase", "s3-preflight", "s3-config",
+    "s4", "s4-settings", "s4-rate-limit", "s4-429", "s4-locust", "s4-checklist",
+    "demo", "demo-guion", "resumen",
+    "w", "w-partida", "w-plan", "w-config", "w-locust", "w-criterios", "w-entregable"
+  ],
+  "sections": {
+    "intro": {"description": "De una API documentada a una API que decide quién la usa, cuánto y desde dónde.", "start": "cover"},
+    "b1": {"description": "Autenticación: identifico al cliente con una API key y respondo 401 si no puedo.", "start": "s1"},
+    "b2": {"description": "Autorización por scopes en el router y validación de JWT Bearer.", "start": "s2"},
+    "b3": {"description": "CORS: qué protege, cómo funciona el preflight y cómo lo configuro.", "start": "s3"},
+    "b4": {"description": "Secrets con pydantic-settings, rate limiting con 429 y prueba de carga con Locust.", "start": "s4"},
+    "demo": {"description": "Demo en vivo de 30 minutos con los ejemplos del módulo 10 y el resumen de la clase 1.", "start": "demo"},
+    "taller": {"description": "Práctica: proteger la Wine Quality API y publicarla como versión 2.0.0.", "start": "w"}
+  },
+  "faces": {
+    "montserrat": {"family": "Montserrat", "href": "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap"},
+    "jetbrains-mono": {"family": "JetBrains Mono", "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap"}
+  },
+  "designSystems": [
+    {
+      "title": "Diapositivas Comillas ICAI",
+      "namespace": "diapositivas-comillas-icai",
+      "artifact": "https://claude.ai/code/artifact/723ab32a-c531-4809-91d0-6e878d24a92e",
+      "version": "1792324054-77f4",
+      "copiedAt": "2026-10-18T16:06:31Z"
+    }
+  ]
+}

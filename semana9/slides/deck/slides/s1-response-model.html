@@ -1,0 +1,16 @@
+<section id="s1-response-model" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Declaro el tipo de retorno</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;gap:56px;align-items:flex-start">
+<div style="width:920px;background:#2d3539;padding:40px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:28px;line-height:1.4;color:#ffffff;white-space:nowrap"><span style="color:#f9b800">class</span> PublicScore(BaseModel):<br>&#160;&#160;&#160;&#160;band: Band<br>&#160;&#160;&#160;&#160;confidence: float = Field(ge=0, le=1)<br>&#160;&#160;&#160;&#160;served_at: datetime<br><br><span style="color:#f9b800">@app.get</span>("/v1/scores/public")<br><span style="color:#f9b800">def</span> read_public_score() -&gt; PublicScore:<br>&#160;&#160;&#160;&#160;score = run_model()&#160;&#160;<span style="color:#aab2b8"># trae raw_score</span><br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">return</span> PublicScore(band=score.band, ...)</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">FastAPI valida la salida con el mismo modelo.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">Filtra lo que no declaro: raw_score no sale.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">Lo documenta en OpenAPI sin escribir nada más.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">Uso response_model solo si devuelvo otro tipo.</p></div>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">8</p>
+<aside>Demo en serialization_demo.py: abre primero /v1/scores/leaky (devuelve un dict con raw_score y la ruta de thresholds) y después /v1/scores/public. Convención de la skill oficial de FastAPI: preferir el tipo de retorno; usar response_model cuando la función devuelve otra cosa (un dict, un objeto interno) y quiero que FastAPI filtre: /v1/scores/filtered. Ventaja extra: Pydantic serializa en Rust, por eso ORJSONResponse está obsoleto.</aside>
+</section>

@@ -1,0 +1,28 @@
+<section id="w-locust" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">¿Qué cuento de mi prueba de carga?</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:40px">
+<div style="background:#2d3539;padding:32px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#ffffff;white-space:nowrap"><span style="color:#aab2b8"># terminal 1</span><br>uv run fastapi dev<br><span style="color:#aab2b8"># terminal 2</span><br>LOCUST_API_KEY=TU_API_KEY uv run --group load locust -f locustfile.py \<br>&#160;&#160;--headless -u 20 -r 5 -t 1m --host http://127.0.0.1:8000 --csv reports/s10</p>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;border-top:8px solid #f9b800;padding:20px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:36px;font-weight:400;line-height:1.2;color:#2d3539">p50 · p95</h3>
+<p style="font-size:28px;font-weight:300;line-height:1.35">Latencia típica y la de la cola lenta.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;border-top:8px solid #f9b800;padding:20px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:36px;font-weight:400;line-height:1.2;color:#2d3539">RPS</h3>
+<p style="font-size:28px;font-weight:300;line-height:1.35">Peticiones por segundo servidas.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;border-top:8px solid #f9b800;padding:20px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:36px;font-weight:400;line-height:1.2;color:#2d3539">% 429</h3>
+<p style="font-size:28px;font-weight:300;line-height:1.35">Predicciones frenadas por el límite.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;border-top:8px solid #2d3539;padding:20px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:36px;font-weight:400;line-height:1.2;color:#2d3539">Lectura</h3>
+<p style="font-size:28px;font-weight:300;line-height:1.35">Un párrafo: ¿cuadra con mi límite?</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">35</p>
+<aside>S10.7, prueba de carga. Se ejecuta en dos terminales: la API con uv run fastapi dev (un proceso, lee .env) y Locust en modo headless con 20 usuarios, 5 nuevos por segundo, durante 1 minuto. LOCUST_API_KEY es la clave de uno de tus clientes de .env; nunca se escribe en locustfile.py. En PowerShell: $env:LOCUST_API_KEY="TU_API_KEY" y el comando en una sola línea. --csv reports/s10 genera s10_stats.csv, s10_failures.csv y s10_stats_history.csv. El locustfile de la práctica tiene tres tareas: predicción válida (peso 8), predicción inválida que espera un 422 con catch_response (peso 1) y /health (peso 1). Qué entregar en reports/README.md, siguiendo su plantilla: p50 y p95, RPS, porcentaje de 429 y un párrafo de interpretación. Pista para el párrafo: con 20 usuarios que esperan entre 0,5 y 2 segundos, ¿cuántas predicciones por minuto pide Locust y cuántas deja pasar el límite del cliente? Si la cuenta cuadra con el % de 429, el limitador funciona. Compara también la latencia de /health, que no pasa por autenticación ni límite. Cada persona pone sus propios números: dependen de la máquina.</aside>
+</section>

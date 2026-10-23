@@ -745,3 +745,104 @@ def test_root_readme_links_week_seven_assignments() -> None:
         "| S7 | [Assignment 7.1](assignments/semana07_clase01_assignment.pdf) "
         "| [Assignment 7.2](assignments/semana07_clase02_assignment.pdf) |"
     ) in readme
+
+
+def week_nine_assignments():
+    week_nine = [item for item in pdfs.ASSIGNMENTS if item.week == 9]
+
+    assert [(item.week, item.class_number) for item in week_nine] == [
+        (9, 1),
+        (9, 2),
+    ]
+    return week_nine
+
+
+def test_week_nine_class_one_covers_the_four_microexercises() -> None:
+    item = week_nine_assignments()[0]
+    content = assignment_text(item)
+
+    assert [int(points) for _, points in item.rubric] == [2, 3, 2, 2, 1]
+    for required in (
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "serialization_demo.py",
+        "errors_demo.py",
+        "openapi_demo.py",
+        "tests/test_examples.py",
+        "response_model",
+        "TU_SECRETO",
+        "dependency_overrides",
+        "raise_server_exceptions=False",
+        "no_income",
+    ):
+        assert required in content
+    assert item.commands[0].startswith(
+        "# Terminal 1 - demos\n"
+        "cd semana9/modules/09-api-professional\n"
+        "uv sync --locked\n"
+    )
+
+
+def test_week_nine_class_two_follows_the_workshop_without_the_solution() -> None:
+    item = week_nine_assignments()[1]
+    content = assignment_text(item)
+
+    assert item.duration == "120 min"
+    assert [points for _, points in item.rubric] == ["2,5", "3", "2", "2", "0,5"]
+    for required in (
+        "S9.1",
+        "S9.2",
+        "S9.3",
+        "S9.4",
+        "1.1.0",
+        "POST /v1/predictions",
+        "contracts/openapi.json",
+        "dependency_overrides",
+        "raw_score",
+        "400, 422 y 503",
+        "WINE_API_MODE=unavailable",
+        "S10",
+    ):
+        assert required in content
+    for forbidden in ("solutions/", "field_serializer", "model_validate"):
+        assert forbidden not in content
+
+
+@pytest.fixture()
+def generated_week_nine(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    output_dir = tmp_path / "assignments"
+    monkeypatch.setattr(pdfs, "OUTPUT_DIR", output_dir)
+    monkeypatch.setattr(sys, "argv", [str(MODULE_PATH), "--week", "9"])
+
+    pdfs.main()
+
+    generated = sorted(output_dir.glob("*.pdf"))
+    assert [path.name for path in generated] == [
+        "semana09_clase01_assignment.pdf",
+        "semana09_clase02_assignment.pdf",
+    ]
+    return generated
+
+
+def test_generated_week_nine_are_two_a4_pages_with_nine_sections(
+    generated_week_nine,
+) -> None:
+    for output in generated_week_nine:
+        reader = PdfReader(output)
+        assert len(reader.pages) == 2
+
+        extracted = "\n".join(page.extract_text() or "" for page in reader.pages)
+        assert re.findall(r"(?m)^([1-9])\. ", extracted) == [
+            str(section_number) for section_number in range(1, 10)
+        ]
+
+
+def test_root_readme_links_week_nine_assignments() -> None:
+    readme = (MODULE_PATH.parents[1] / "README.md").read_text("utf-8")
+
+    assert (
+        "| S9 | [Assignment 9.1](assignments/semana09_clase01_assignment.pdf) "
+        "| [Assignment 9.2](assignments/semana09_clase02_assignment.pdf) |"
+    ) in readme

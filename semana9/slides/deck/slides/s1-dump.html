@@ -1,0 +1,15 @@
+<section id="s1-dump" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Cómo serializa Pydantic v2</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:30px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:34%;color:#ffffff;font-weight:400;text-align:left">Llamada</th><th style="width:36%;color:#ffffff;font-weight:400;text-align:left">Qué obtengo</th><th style="width:30%;color:#ffffff;font-weight:400;text-align:left">Cuándo lo uso</th></tr>
+<tr><td>model_dump()</td><td>dict con datetime y Enum</td><td>Lógica interna</td></tr>
+<tr><td>model_dump(mode="json")</td><td>dict solo con tipos JSON</td><td>Un JSONResponse a mano</td></tr>
+<tr><td>model_dump_json()</td><td>str JSON, serializado en Rust</td><td>Logs, colas y ficheros</td></tr>
+<tr><td>exclude_none=True</td><td>Omite los campos None</td><td>fields en los errores</td></tr>
+<tr><td>by_alias=True</td><td>Usa el alias público</td><td>Nombres camelCase</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">10</p>
+<aside>Error típico: devolver JSONResponse(content=model.model_dump()) con un datetime dentro; falla porque json no sabe serializar datetime. mode="json" resuelve el problema. En el workshop, el sobre de error se construye con model_dump(mode="json", exclude_none=True) para que fields solo aparezca en errores de validación. En la demo, /v1/scores/compact usa response_model_exclude_none=True.</aside>
+</section>

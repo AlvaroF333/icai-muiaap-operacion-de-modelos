@@ -1,0 +1,14 @@
+<section id="s2-scopes" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">¿Quién puede llamar a cada endpoint?</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:48px">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:30px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:32%;color:#ffffff;font-weight:400;text-align:left">Endpoint</th><th style="width:17%;color:#ffffff;font-weight:400;text-align:left">Scope</th><th style="width:17%;color:#ffffff;font-weight:400;text-align:right">Sin key</th><th style="width:17%;color:#ffffff;font-weight:400;text-align:right">Key sin scope</th><th style="width:17%;color:#ffffff;font-weight:400;text-align:right">Key con scope</th></tr>
+<tr><td>GET /health</td><td>público</td><td style="text-align:right">200</td><td style="text-align:right">200</td><td style="text-align:right">200</td></tr>
+<tr><td>POST /v1/predictions</td><td>predict</td><td style="text-align:right">401</td><td style="text-align:right">403</td><td style="text-align:right">200</td></tr>
+<tr><td>GET /v1/admin/usage</td><td>admin</td><td style="text-align:right">401</td><td style="text-align:right">403</td><td style="text-align:right">200</td></tr>
+</table>
+<p style="font-size:36px;font-weight:300;line-height:48px">Primero autentico y después compruebo el scope: por eso el 401 llega antes que el 403.</p>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">13</p>
+<aside>Esta tabla es el contrato de autorización de la Wine Quality API 2.0.0 (5 min); los tests de S10.3 la recorren fila por fila. Un scope es un permiso con nombre: predict permite pedir predicciones; admin permite ver el uso por cliente. El front de Streamlit recibe solo predict (mínimo privilegio); el equipo de operación recibe predict y admin. /health queda público y sin rate limit porque lo llama el orquestador (Docker en S11-S12, Kubernetes en empresa) como readiness probe y no tiene credenciales; por eso no debe exponer nada sensible. Pregunta: ¿qué debería devolver /v1/admin/usage? Peticiones por cliente en la ventana y su límite, nunca las claves. Ejercicio rápido: pide a alguien que prediga el status de «front llama a /v1/admin/usage» (403) y de «nadie llama a /v1/admin/usage» (401).</aside>
+</section>

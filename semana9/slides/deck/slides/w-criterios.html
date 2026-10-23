@@ -1,0 +1,15 @@
+<section id="w-criterios" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Criterios de aceptación</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:30px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:50%;color:#ffffff;font-weight:400;text-align:left">Criterio</th><th style="width:50%;color:#ffffff;font-weight:400;text-align:left">Evidencia</th></tr>
+<tr><td>La suite completa pasa</td><td>uv run pytest -q sin fallos</td></tr>
+<tr><td>Ningún error devuelve {"detail": ...}</td><td>test_s9_2 y prueba manual en /docs</td></tr>
+<tr><td>OpenAPI documenta cada status</td><td>test_s9_3 y captura de /docs</td></tr>
+<tr><td>El contrato está versionado</td><td>contracts/openapi.json en Git</td></tr>
+<tr><td>El código pasa Ruff</td><td>ruff check y ruff format --check</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">34</p>
+<aside>Estos criterios están también en el README del ejercicio. Los tests de S9.1-S9.3 no se pueden modificar; si un test parece incorrecto, se comenta con el docente. La suite solo queda sin fallos cuando los cuatro tests propios de S9.4 sustituyen sus pytest.fail; con la parametrización habrá 27 tests o más.</aside>
+</section>

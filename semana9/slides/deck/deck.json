@@ -1,0 +1,36 @@
+{
+  "v": 4,
+  "createdOnFiles": {"v": 1, "at": "2026-10-18T10:00:00Z"},
+  "lists": "css",
+  "title": "Semana 9 · API profesional",
+  "cover": "cover",
+  "order": [
+    "cover", "agenda", "pregunta", "recorrido", "objetivos",
+    "s1", "s1-frase", "s1-response-model", "s1-serializers", "s1-dump", "s1-in-out", "s1-versionado",
+    "s2", "s2-quien", "s2-sobre", "s2-handlers", "s2-422", "s2-nunca",
+    "s3", "s3-openapi", "s3-docstrings", "s3-ejemplos", "s3-revision",
+    "s4", "s4-piramide", "s4-testclient", "s4-overrides", "s4-contrato", "resumen",
+    "w", "w-partida", "w-plan", "w-comandos", "w-criterios", "w-entregable"
+  ],
+  "sections": {
+    "intro": {"description": "De una API que funciona a una API que otros pueden mantener.", "start": "cover"},
+    "b1": {"description": "Serialización avanzada: la respuesta también es un contrato.", "start": "s1"},
+    "b2": {"description": "Errores predecibles con un único sobre de error.", "start": "s2"},
+    "b3": {"description": "OpenAPI, docstrings y ejemplos como documentación viva.", "start": "s3"},
+    "b4": {"description": "Tests de comportamiento y de contrato con TestClient.", "start": "s4"},
+    "taller": {"description": "Workshop: endurecer la Wine Quality API de S8.", "start": "w"}
+  },
+  "faces": {
+    "montserrat": {"family": "Montserrat", "href": "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap"},
+    "jetbrains-mono": {"family": "JetBrains Mono", "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap"}
+  },
+  "designSystems": [
+    {
+      "title": "Diapositivas Comillas ICAI",
+      "namespace": "diapositivas-comillas-icai",
+      "artifact": "https://claude.ai/code/artifact/723ab32a-c531-4809-91d0-6e878d24a92e",
+      "version": "1792324054-77f4",
+      "copiedAt": "2026-10-18T10:00:00Z"
+    }
+  ]
+}

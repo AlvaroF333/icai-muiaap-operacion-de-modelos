@@ -1,0 +1,25 @@
+<section id="s2-jwt-anatomia" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">¿Qué lleva dentro un JWT?</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:40px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:36px;color:#2d3539">header<span style="color:#f9b800">.</span>payload<span style="color:#f9b800">.</span>signature</p>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;border-top:8px solid #f9b800;padding:28px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:40px;font-weight:400;line-height:1.2;color:#2d3539">Header</h3>
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#2d3539;white-space:nowrap">"alg": "HS256"<br>"typ": "JWT"</p>
+<p style="font-size:30px;font-weight:300;line-height:1.4">Digo con qué algoritmo firmo.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;border-top:8px solid #f9b800;padding:28px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:40px;font-weight:400;line-height:1.2;color:#2d3539">Payload</h3>
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#2d3539;white-space:nowrap">"sub": "front"<br>"scope": "predict"<br>"iss": "muiaap-demo-idp"<br>"aud": "wine-api"<br>"exp": 1792340000</p>
+<p style="font-size:30px;font-weight:300;line-height:1.4">Quién es, qué puede, quién lo emite y hasta cuándo.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;border-top:8px solid #f9b800;padding:28px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:40px;font-weight:400;line-height:1.2;color:#2d3539">Signature</h3>
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#2d3539;white-space:nowrap">HMAC-SHA256(<br>&#160;&#160;header.payload,<br>&#160;&#160;SECRET_KEY)</p>
+<p style="font-size:30px;font-weight:300;line-height:1.4">Si cambio un byte, la firma ya no cuadra.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">15</p>
+<aside>Anatomía de un JWT (JSON Web Token, RFC 7519), 5 min. Son tres trozos en Base64URL separados por puntos. Header: el algoritmo de firma. Payload: los claims. sub (subject): quién es. scope: qué puede hacer, separado por espacios si hay varios. iss (issuer): quién emitió el token. aud (audience): para qué API es. exp (expiration): instante de caducidad en segundos Unix. Signature: firma del header y el payload; con HS256 es un HMAC con una clave compartida; con RS256 o ES256 el IdP firma con su clave privada y la API valida con la pública. Analogía: es una pulsera de festival con fecha y zonas impresas y un holograma: cualquiera puede leer las zonas, pero nadie puede falsificar el holograma. Diferencia con la API key: la API consulta su lista de claves; con un JWT no consulta a nadie, le basta la firma, por eso escala bien, pero revocar antes de exp es difícil y se usan caducidades cortas (15 min en la demo). Abre jwt.io con un token de la demo para mostrar que el payload se lee sin la clave.</aside>
+</section>

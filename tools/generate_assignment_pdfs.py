@@ -408,7 +408,7 @@ def title_block(assignment: Assignment) -> list[Flowable]:
         ["DURACION", "MODALIDAD", "PREREQUISITOS"],
         [(assignment.duration, assignment.modality, assignment.prerequisites)],
         widths=[43 * mm, 48 * mm, 79 * mm],
-        compact=assignment.week in {2, 7},
+        compact=assignment.week in {2, 7, 9},
     )
     return [
         logo,
@@ -425,7 +425,7 @@ def title_block(assignment: Assignment) -> list[Flowable]:
 
 
 def build_story(assignment: Assignment) -> list[Flowable]:
-    uses_compact_layout = assignment.week in {2, 7}
+    uses_compact_layout = assignment.week in {2, 7, 9}
     body_style = WEEK_TWO_BODY if uses_compact_layout else BODY
     section_style = WEEK_TWO_H1 if uses_compact_layout else H1
     task_style = WEEK_TWO_TASK if uses_compact_layout else TASK
@@ -1857,6 +1857,227 @@ def test_unknown_environment() -> None:
         [
             "semana7/modules/07-http-rest-clients/exercises/03-wine-http-gateway/problem/starter/README.md",
             "semana7/modules/07-http-rest-clients/guides/class-2-workshop.md",
+        ],
+    ),
+    assignment(
+        9,
+        1,
+        "Lo que le falta a una API que ya responde",
+        "Microejercicios de serialización, errores, OpenAPI y tests sobre las demos",
+        "4 x 5 min en la clase de 2 h",
+        "Individual, durante la clase 1",
+        "API funcional de S8; Python 3.12+ y uv",
+        (
+            "Observar en demos FastAPI ejecutables los cuatro huecos de una API que "
+            "ya responde: salida sin contrato, errores con formas distintas, "
+            "documentación que no refleja la API y ningún test que avise si el "
+            "contrato cambia."
+        ),
+        [
+            "No se escribe una API nueva: se ejecutan, observan y modifican temporalmente las demos de examples/; la Wine Quality API de S8 no se toca hasta la clase 2.",
+            "Cada microejercicio cierra un bloque de teoría: M1 serialización, M2 errores, M3 OpenAPI y M4 tests.",
+            "Las demos son deterministas y docentes: ningún score representa una decisión real de crédito ni de calidad.",
+            "Lo que observes hoy es el requisito previo directo del workshop de la clase 2.",
+        ],
+        [
+            "examples/serialization_demo.py, errors_demo.py y openapi_demo.py: una app FastAPI de un archivo por bloque",
+            "tests/test_examples.py con TestClient, parametrize y dependency_overrides",
+            "exercises/01-api-microexercises/problem/README.md con las preguntas de M1-M4",
+            "Entorno del módulo con uv.lock; /docs, /redoc y /openapi.json en http://127.0.0.1:8000",
+        ],
+        [
+            (
+                "Prepara el entorno",
+                "Desde semana9/modules/09-api-professional sincroniza con uv sync --locked y confirma con uv run pytest -q que las demos parten con 9 tests en verde.",
+            ),
+            (
+                "M1 - Serialización",
+                "Con serialization_demo.py compara /v1/scores/leaky y /v1/scores/public; anota los campos que solo aparecen en la primera, explica por qué /v1/scores/filtered tampoco los devuelve aunque la función retorna un dict y mira en /docs si PublicScore incluye is_reliable.",
+            ),
+            (
+                "M2 - Errores",
+                "Con errors_demo.py envía a POST /v1/scores los tres cuerpos del enunciado y llama a GET /v1/nada y GET /v1/boom; tabula status, error.code y error.fields. Comenta el decorador de handle_validation, observa la respuesta por defecto y restáuralo.",
+            ),
+            (
+                "M3 - OpenAPI",
+                "Con openapi_demo.py localiza en /openapi.json dónde terminan summary, docstring y responses de create_score; ejecuta el ejemplo minor con Try it out y añade un tercer ejemplo no_income sin el campo income.",
+            ),
+            (
+                "M4 - Tests",
+                "En tests/test_examples.py localiza el test con dependency_overrides, quita temporalmente raise_server_exceptions=False del fixture errors_client y explica qué cambia; escribe un test para income: 0.",
+            ),
+            (
+                "Restaura y verifica",
+                "Deshaz los cambios temporales de M2 y M4; si conservas el ejemplo de M3, adapta el test que cuenta ejemplos. Deja pytest y Ruff en verde con tu test incluido.",
+            ),
+        ],
+        [
+            ("M1", "Campos filtrados y una frase sobre qué hace response_model con lo que no declara."),
+            ("M2", "Tabla de las cinco respuestas de error y respuesta por defecto sin el manejador."),
+            ("M3", "Ubicación en /openapi.json y desplegable de Swagger con tres ejemplos."),
+            ("M4", "Explicación del cambio en el fixture y salida de pytest con tu test en verde."),
+        ],
+        [
+            "La respuesta de M1 menciona response_model y qué hace con los campos que no declara.",
+            "Las cinco respuestas de error de M2 tienen la clave error en la raíz y ninguna contiene TU_SECRETO.",
+            "handle_validation queda restaurado tras observar el {\"detail\": ...} por defecto de FastAPI.",
+            "Swagger muestra tres ejemplos y la suite sigue en verde, o el cambio de M3 se deshace.",
+            "El test nuevo de M4 comprueba 422 y fields[0].field == \"income\" para income: 0.",
+            "uv run pytest -q y uv run ruff check . terminan en verde desde la raíz del módulo.",
+        ],
+        [
+            ("M1 - Serialización y filtrado", "2"),
+            ("M2 - Sobre de error y fallos seguros", "3"),
+            ("M3 - OpenAPI fiel a la API", "2"),
+            ("M4 - Test nuevo y overrides", "2"),
+            ("Restauración y reproducibilidad", "1"),
+        ],
+        [
+            (
+                "# Terminal 1 - demos\n"
+                "cd semana9/modules/09-api-professional\n"
+                "uv sync --locked\n"
+                "uv run fastapi dev examples/serialization_demo.py\n"
+                "# M2: examples/errors_demo.py   M3: examples/openapi_demo.py"
+            ),
+            (
+                "# Terminal 2 - M2 con curl (Bash o Git Bash)\n"
+                "BASE_URL=http://127.0.0.1:8000\n"
+                "curl -i -X POST \"$BASE_URL/v1/scores\" \\\n"
+                "  -H \"Content-Type: application/json\" \\\n"
+                "  -d '{\"age\": \"treinta\", \"income\": 1000}'\n"
+                "curl -i \"$BASE_URL/v1/nada\"\n"
+                "curl -i \"$BASE_URL/v1/boom\""
+            ),
+            (
+                "# Terminal 2 - M4 y comprobación final\n"
+                "cd semana9/modules/09-api-professional\n"
+                "uv run pytest -q\n"
+                "uv run ruff check ."
+            ),
+        ],
+        [
+            "No escribas una API nueva ni toques la Wine Quality API: es el trabajo de la clase 2.",
+            "Cambia de demo con Ctrl+C; las tres escuchan en el puerto 8000.",
+            "PowerShell: usa curl.exe o lanza las peticiones desde /docs.",
+            "La solución comentada se comparte al final de la clase.",
+        ],
+        [
+            "semana9/modules/09-api-professional/exercises/01-api-microexercises/problem/README.md",
+            "semana9/modules/09-api-professional/examples/README.md",
+            "semana9/modules/09-api-professional/sessions/01-teoria-api-profesional/README.md",
+        ],
+    ),
+    assignment(
+        9,
+        2,
+        "Wine Quality API v1.1",
+        "Hacer cumplir, documentar y probar el contrato de S7 sin romper a sus clientes",
+        "120 min",
+        "Individual, taller guiado por tests",
+        "Assignment 9.1 y API funcional de S8",
+        (
+            "Llevar la Wine Quality API de 1.0.0 a 1.1.0 completando los TODO del "
+            "starter en orden: salida tipada y filtrada, errores con un único sobre, "
+            "OpenAPI útil para quien consume y tests propios que demuestren el contrato."
+        ),
+        [
+            "El contrato público de S7 no cambia: POST /v1/predictions, GET /health y el sobre de error con code, message, fields y request_id se hacen cumplir y se documentan, no se rediseñan.",
+            "El starter es la API de S8: valida la entrada con Pydantic y carga el predictor una vez en el lifespan, pero devuelve dicts y errores {\"detail\": ...}.",
+            "Al empezar, uv run pytest -q da 4 tests en verde y 23 en rojo; cada test en rojo corresponde a un TODO S9.",
+            "Checkpoints: 8 en verde tras S9.1, 16 tras S9.2, 23 tras S9.3 y la suite completa tras S9.4.",
+        ],
+        [
+            "exercises/02-wine-api-hardening/problem/starter/ con su propio uv.lock y los TODO S9.1-S9.4",
+            "Suite de aceptación de S9.1-S9.3 como especificación ejecutable",
+            "predictor.py, request_id.py y dependencies.py terminados; export_openapi.py para el snapshot",
+            "WINE_API_MODE=unavailable para simular un modelo no cargado",
+        ],
+        [
+            (
+                "Arranca y mapea",
+                "Sincroniza el starter, confirma 23 tests en rojo y 4 en verde y localiza los TODO con grep -rn \"TODO S9\" src tests antes de editar.",
+            ),
+            (
+                "S9.1 - Contrato de salida",
+                "Declara en Prediction solo los cuatro campos públicos del contrato; decide en el contrato, no en el predictor, cómo se redondea confidence y cómo se escribe served_at en UTC con sufijo Z. Las rutas devuelven modelos tipados.",
+            ),
+            (
+                "S9.2 - Errores",
+                "Implementa y registra los manejadores de validación, WineApiError, HTTPException de Starlette y error inesperado; /health lanza ModelUnavailableError. Cada fallo recibe su status y error.code sin filtrar detalles internos.",
+            ),
+            (
+                "S9.3 - OpenAPI",
+                "Completa los metadatos de la app, versión incluida; prefix, tags y responses 400, 422 y 503 en el APIRouter; description con unidad en cada Field; summary, docstring y al menos tres ejemplos de cuerpo en Swagger.",
+            ),
+            (
+                "S9.4 - Tests propios",
+                "Sustituye los cuatro pytest.fail: 503 con dependency_overrides y limpieza, cinco o más casos fuera de contrato con parametrize, límites inclusivos de alcohol y snapshot de OpenAPI.",
+            ),
+            (
+                "Versiona y reúne evidencia",
+                "Exporta y versiona contracts/openapi.json, deja pytest y Ruff en verde, captura /docs y redacta la nota de compatibilidad.",
+            ),
+        ],
+        [
+            ("API 1.1.0", "TODO resueltos y uv run pytest -q sin fallos."),
+            ("contracts/openapi.json", "Snapshot generado con wine_api.export_openapi y versionado en Git."),
+            ("Calidad", "uv run ruff check . y uv run ruff format --check . en verde."),
+            ("Captura de /docs", "Predicción desplegada con errores 400, 422 y 503 y ejemplos de cuerpo."),
+            ("Nota de compatibilidad", "5-10 líneas: qué cambio es compatible, cuál rompería a los clientes de S7 y cómo lo versionarías."),
+        ],
+        [
+            "raw_score no aparece en ninguna respuesta ni en contracts/openapi.json.",
+            "confidence sale con dos decimales y served_at en UTC, ISO 8601 y con sufijo Z.",
+            "Ningún error devuelve {\"detail\": ...}, trazas, rutas de ficheros, texto de excepción ni input.",
+            "Las rutas lanzan errores de dominio y los manejadores deciden el status; no hay HTTPException en el dominio.",
+            "/docs documenta 400, 422 y 503 con ErrorResponse, tags en el router y tres ejemplos de cuerpo.",
+            "Los tests propios usan dependency_overrides, parametrize y snapshot sin red real; los archivos protegidos quedan intactos.",
+        ],
+        [
+            ("Contrato de salida tipado y filtrado (S9.1)", "2,5"),
+            ("Errores consistentes y seguros (S9.2)", "3"),
+            ("OpenAPI útil para un consumidor (S9.3)", "2"),
+            ("Tests propios con intención (S9.4)", "2"),
+            ("Calidad y nota de compatibilidad", "0,5"),
+        ],
+        [
+            (
+                "# Preparación\n"
+                "cd semana9/modules/09-api-professional/exercises/02-wine-api-hardening/problem/starter\n"
+                "uv sync --locked\n"
+                "uv run pytest -q\n"
+                "grep -rn \"TODO S9\" src tests"
+            ),
+            (
+                "# Checkpoint por paso\n"
+                "uv run pytest -q tests/test_s9_1_output_contract.py\n"
+                "uv run pytest -q tests/test_s9_2_errors.py\n"
+                "uv run pytest -q tests/test_s9_3_openapi.py\n"
+                "uv run pytest -q tests/test_s9_4_student.py"
+            ),
+            (
+                "# Contrato y calidad\n"
+                "uv run python -m wine_api.export_openapi\n"
+                "uv run ruff check .\n"
+                "uv run ruff format --check ."
+            ),
+            (
+                "# API local (Bash) y modelo no disponible\n"
+                "uv run fastapi dev\n"
+                "WINE_API_MODE=unavailable uv run fastapi dev"
+            ),
+            "# PowerShell\n$env:WINE_API_MODE=\"unavailable\"; uv run fastapi dev",
+        ],
+        [
+            "No modifiques predictor.py, request_id.py, dependencies.py ni los tests de S9.1-S9.3; si un test parece incorrecto, coméntalo con el docente.",
+            "No añadas autenticación ni API keys: la protección de endpoints llega en S10 y estos tests serán su red de seguridad.",
+            "Sigue la skill de FastAPI del repositorio: tipos de retorno, Annotated, parámetros comunes en el APIRouter y def para código bloqueante.",
+            "La solución de referencia se consulta después de la entrega.",
+        ],
+        [
+            "semana9/modules/09-api-professional/exercises/02-wine-api-hardening/README.md",
+            "semana9/modules/09-api-professional/exercises/02-wine-api-hardening/problem/starter/README.md",
         ],
     ),
 ]

@@ -1,0 +1,15 @@
+<section id="s3-docstrings" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Docstrings que se leen en Swagger</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;gap:48px;align-items:flex-start">
+<div style="width:1040px;background:#2d3539;padding:40px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#ffffff;white-space:nowrap">router = APIRouter(<br>&#160;&#160;&#160;&#160;prefix="/v1/scores",<br>&#160;&#160;&#160;&#160;tags=["scoring"],<br>&#160;&#160;&#160;&#160;responses={422: {"model": ErrorResponse}},<br>)<br><br><span style="color:#f9b800">@router.post</span>("", summary="Calcular el score de riesgo")<br><span style="color:#f9b800">def</span> create_score(payload: ...) -&gt; ScoringResponse:<br>&#160;&#160;&#160;&#160;<span style="color:#aab2b8">"""Calcula la probabilidad de impago.</span><br><br><span style="color:#aab2b8">&#160;&#160;&#160;&#160;- El score es docente: **no** decide créditos.</span><br><span style="color:#aab2b8">&#160;&#160;&#160;&#160;"""</span></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">Prefijo, tags y errores comunes van en el router.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">El docstring es la description, en Markdown.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">Declaro el 422 con mi ErrorResponse.</p></div>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">21</p>
+<aside>examples/openapi_demo.py. Convención de la skill oficial de FastAPI: los parámetros comunes (prefix, tags, dependencies, responses) se declaran en el APIRouter, no en include_router(), y una función por operación HTTP. El docstring se renderiza como Markdown en Swagger: escribe para quien consume la API (qué hace, rangos, qué hacer con cada error), no para quien la mantiene. Al declarar responses={422: ...}, FastAPI deja de añadir HTTPValidationError.</aside>
+</section>

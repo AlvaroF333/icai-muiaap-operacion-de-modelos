@@ -1,0 +1,16 @@
+<section id="s4-rate-limit" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">¿Cómo cuento las peticiones?</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:40px">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:28px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:22%;color:#ffffff;font-weight:400;text-align:left">Algoritmo</th><th style="width:28%;color:#ffffff;font-weight:400;text-align:left">Cómo cuenta</th><th style="width:25%;color:#ffffff;font-weight:400;text-align:left">Ventaja</th><th style="width:25%;color:#ffffff;font-weight:400;text-align:left">Inconveniente</th></tr>
+<tr style="background:#f9b800"><td style="color:#2d3539">Ventana fija</td><td style="color:#2d3539">N peticiones por ventana</td><td style="color:#2d3539">Simple y barata</td><td style="color:#2d3539">Ráfaga doble en el borde</td></tr>
+<tr><td>Ventana deslizante</td><td>Las N de los últimos 60 s</td><td>Reparto más justo</td><td>Más memoria por cliente</td></tr>
+<tr><td>Token bucket</td><td>Fichas que se recargan</td><td>Admite ráfagas acotadas</td><td>Dos parámetros a ajustar</td></tr>
+</table>
+<div style="background:#2d3539;padding:32px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#ffffff;white-space:nowrap"><span style="color:#aab2b8">HTTP/1.1 429 Too Many Requests</span><br><span style="color:#f9b800">Retry-After</span>: 42<br>{"error": {"code": "rate_limited", "message": "Rate limit exceeded; ..."},<br>&#160;"request_id": "req_3f9a1c2b7d4e"}</p>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">24</p>
+<aside>Rate limiting (4 min). ¿Por qué limitar? Un modelo cuesta CPU, GPU o dinero por llamada; sin límite, un cliente con un bucle mal escrito tumba el servicio para todos. Se limita por cliente autenticado, no por IP: detrás de una IP puede haber una oficina entera. Ventana fija: cuento peticiones en bloques de 60 s; problema: 60 al final de un bloque y 60 al principio del siguiente son 120 en pocos segundos. Ventana deslizante: cuento las de los últimos 60 s exactos; más justo, más memoria. Token bucket: cada cliente tiene un cubo de fichas que se rellena a ritmo constante; permite ráfagas cortas sin superar la media; es lo que usan muchos gateways. En la práctica usamos ventana fija en memoria del proceso: suficiente para aprender, pero con dos réplicas cada una cuenta por su lado; en producción el contador vive en Redis o el límite lo pone el API gateway. La respuesta: 429 con el sobre de S9, code rate_limited, y Retry-After con los segundos enteros que faltan; las respuestas permitidas llevan X-RateLimit-Limit y X-RateLimit-Remaining. El texto exacto del message lo fija el código.</aside>
+</section>

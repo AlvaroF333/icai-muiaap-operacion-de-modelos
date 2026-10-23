@@ -1,0 +1,15 @@
+<section id="s1-versionado" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Evoluciono el contrato sin romper a nadie</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:30px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:54%;color:#ffffff;font-weight:400;text-align:left">Cambio en el contrato</th><th style="width:20%;color:#ffffff;font-weight:400;text-align:left">Efecto</th><th style="width:26%;color:#ffffff;font-weight:400;text-align:left">Versión</th></tr>
+<tr><td>Añado un campo a la respuesta (served_at)</td><td>Compatible</td><td>Menor: 1.0.0 → 1.1.0</td></tr>
+<tr><td>Añado un campo opcional a la entrada</td><td>Compatible</td><td>Menor</td></tr>
+<tr><td>Corrijo una descripción o un ejemplo</td><td>Compatible</td><td>Parche</td></tr>
+<tr><td>Renombro o elimino un campo</td><td>Rompe clientes</td><td>Mayor y /v2</td></tr>
+<tr><td>Endurezco un rango de entrada</td><td>Rompe clientes</td><td>Mayor y /v2</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">12</p>
+<aside>Pregunta para la clase: ¿añadir un valor nuevo a QualityBand es compatible? Depende del cliente: si hace un switch exhaustivo, se rompe. Lo tratamos como cambio que rompe salvo que el contrato avise de que la lista puede crecer. La versión de la app (FastAPI(version=...)) y la del modelo (model_version) son cosas distintas: la primera versiona el contrato y la segunda, el artefacto.</aside>
+</section>

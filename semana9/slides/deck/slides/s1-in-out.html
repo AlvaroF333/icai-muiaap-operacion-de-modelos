@@ -1,0 +1,22 @@
+<section id="s1-in-out" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Un modelo de entrada no es uno de salida</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;border:3px solid #2d3539;padding:44px">
+<p style="font-size:30px;font-weight:400;letter-spacing:2px">ENTRADA</p>
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:30px;color:#2d3539">PredictionRequest</p>
+<p style="font-size:32px;font-weight:300;line-height:1.4">Rechazo lo que no conozco con extra="forbid" y strict=True.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#2d3539;padding:44px">
+<p style="font-size:30px;font-weight:400;letter-spacing:2px;color:#f9b800">INTERNO</p>
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:30px;color:#ffffff">ModelOutput</p>
+<p style="font-size:32px;font-weight:300;line-height:1.4;color:#ffffff">Lo que produce el modelo, raw_score incluido. Nunca sale.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;border:3px solid #2d3539;padding:44px">
+<p style="font-size:30px;font-weight:400;letter-spacing:2px">SALIDA</p>
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:30px;color:#2d3539">PredictionResponse</p>
+<p style="font-size:32px;font-weight:300;line-height:1.4">Lo que prometo. Solo cambia con una nueva versión.</p>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">11</p>
+<aside>strict=True evita que Pydantic convierta true en 1.0 o "9.4" en 9.4: el contrato de S7 rechaza booleanos y textos. Los enteros sí son números válidos. El objeto interno puede cambiar cada semana (más métricas, otro modelo); el público no. Separarlos es lo que permite evolucionar el modelo sin romper al consumidor. Para pasar de ModelOutput a Prediction: Prediction.model_validate(output, from_attributes=True).</aside>
+</section>

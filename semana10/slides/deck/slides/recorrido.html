@@ -1,0 +1,22 @@
+<section id="recorrido" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">De dónde vengo</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#2d3539;padding:48px">
+<p style="font-size:30px;font-weight:400;letter-spacing:2px;color:#f9b800">S8</p>
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:44px;font-weight:400;line-height:1.2;color:#ffffff">Lo implemento</h3>
+<p style="font-size:32px;font-weight:300;line-height:1.4;color:#ffffff">FastAPI, rutas, Pydantic, lifespan y prueba con ngrok.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#2d3539;padding:48px">
+<p style="font-size:30px;font-weight:400;letter-spacing:2px;color:#f9b800">S9</p>
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:44px;font-weight:400;line-height:1.2;color:#ffffff">Lo garantizo</h3>
+<p style="font-size:32px;font-weight:300;line-height:1.4;color:#ffffff">Salida tipada, sobre de error, OpenAPI rico y tests de contrato.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#f9b800;padding:48px">
+<p style="font-size:30px;font-weight:400;letter-spacing:2px;color:#2d3539">S10 · HOY</p>
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:44px;font-weight:400;line-height:1.2;color:#2d3539">Lo protejo</h3>
+<p style="font-size:32px;font-weight:300;line-height:1.4;color:#2d3539">API key, scopes, CORS, secrets fuera del código y límites de consumo.</p>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">4</p>
+<aside>Partimos de la solución de S9: la Wine Quality API 1.1.0 con sobre de error único (code, message, fields, request_id), contrato en contracts/openapi.json y suite en verde. Esa suite es la red de seguridad de hoy: añadimos autenticación sin romper lo que ya funcionaba. Al exigir una API key, los clientes anónimos de S7 dejan de funcionar, así que la API pasa a la versión 2.0.0 (cambio mayor). La ruta sigue en /v1 porque los payloads no cambian y el front se actualiza de forma coordinada para enviar X-API-Key. En S11 empaquetaremos esta API en Docker; la configuración por variables de entorno que hacemos hoy es lo que permitirá configurar el contenedor.</aside>
+</section>

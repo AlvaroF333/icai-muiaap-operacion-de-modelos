@@ -1,0 +1,16 @@
+<section id="s2-sobre" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Un único sobre para todos los errores</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;gap:56px;align-items:flex-start">
+<div style="width:860px;background:#2d3539;padding:40px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:28px;line-height:1.4;color:#ffffff;white-space:nowrap">{<br>&#160;&#160;<span style="color:#f9b800">"error"</span>: {<br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">"code"</span>: "validation_error",<br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">"message"</span>: "JSON is valid but ...",<br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">"fields"</span>: [<br>&#160;&#160;&#160;&#160;&#160;&#160;{"field": "features.alcohol",<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;"message": "Input should be ..."}<br>&#160;&#160;&#160;&#160;]<br>&#160;&#160;},<br>&#160;&#160;<span style="color:#f9b800">"request_id"</span>: "req_3f9a1c2b7d4e"<br>}</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">El cliente programa contra code, nunca contra message.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">fields solo aparece en errores de validación.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">request_id coincide con la cabecera X-Request-Id.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:17px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:36px;font-weight:300;line-height:48px">Alternativa estándar: RFC 9457, problem+json.</p></div>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">15</p>
+<aside>Sin trabajo extra, FastAPI devuelve tres formas distintas: {"detail": [...]} en un 422, {"detail": "Not Found"} en un 404 y texto plano «Internal Server Error» en un 500. El gateway de S7 tendría que conocer las tres. Con un sobre único, el cliente escribe un único parser. RFC 9457 (Problem Details) es el estándar IETF para lo mismo: type, title, status, detail e instance. Lo mencionamos; mantenemos el sobre de S7 porque el cliente ya existe.</aside>
+</section>

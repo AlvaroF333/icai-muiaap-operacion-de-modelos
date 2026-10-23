@@ -1,0 +1,19 @@
+<section id="s1-authn-authz" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Autenticar no es autorizar</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#2d3539;padding:48px">
+<p style="font-size:30px;font-weight:400;letter-spacing:2px;color:#f9b800">AUTENTICACIÓN · 401</p>
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:44px;font-weight:400;line-height:1.2;color:#ffffff">¿Quién eres?</h3>
+<p style="font-size:32px;font-weight:300;line-height:1.4;color:#ffffff">Es la recepción del hotel: compruebo tu identidad antes de darte una llave.</p>
+<p style="font-size:30px;font-weight:300;line-height:1.4;color:#aab2b8">Sin credencial válida respondo 401 Unauthorized.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#f9b800;padding:48px">
+<p style="font-size:30px;font-weight:400;letter-spacing:2px;color:#2d3539">AUTORIZACIÓN · 403</p>
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:44px;font-weight:400;line-height:1.2;color:#2d3539">¿Qué puedes hacer?</h3>
+<p style="font-size:32px;font-weight:300;line-height:1.4;color:#2d3539">Es la llave de la habitación: abre tu puerta, no la sala de máquinas.</p>
+<p style="font-size:30px;font-weight:300;line-height:1.4;color:#2d3539">Te conozco, pero sin permiso respondo 403 Forbidden.</p>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">7</p>
+<aside>Distinción clave del día (5 min). Autenticación (authn): ¿quién eres? Autorización (authz): ¿qué puedes hacer? Siempre en ese orden: no puedo decidir permisos de alguien a quien no he identificado. Analogía del hotel: en recepción enseño el DNI y me dan una tarjeta; la tarjeta abre mi habitación y el gimnasio, pero no la sala de máquinas. Pregunta a la clase: si mando una API key correcta a un endpoint de administración sin tener permiso, ¿401 o 403? Respuesta: 403, porque la API sí sabe quién soy. Error histórico de nombres: el status 401 se llama Unauthorized, pero significa «no autenticado». Por eso el 401 lleva la cabecera WWW-Authenticate, que indica cómo autenticarse, y el 403 no.</aside>
+</section>

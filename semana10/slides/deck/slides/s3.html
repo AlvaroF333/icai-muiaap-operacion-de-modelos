@@ -1,0 +1,9 @@
+<section id="s3" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:0px">
+<svg aria-label="Panel facetado del separador" viewBox="0 0 724 1080" width="724" height="1080" xmlns="http://www.w3.org/2000/svg" style="position:absolute;left:0px;top:0px;width:724px;height:1080px"><rect width="724" height="1080" fill="#1f2328"/><polygon points="0,0 724,0 724,260 300,560" fill="#0f171f"/><polygon points="0,560 300,560 0,1080" fill="#383d46"/><polygon points="300,560 724,260 724,1080 120,1080" fill="#2d3539"/><polygon points="724,640 724,1080 380,1080" fill="#f9b800"/></svg>
+<p style="position:absolute;left:96px;top:128px;width:560px;font-size:100px;font-weight:400;line-height:114px;color:#f9b800">BLOQUE 3</p>
+<div style="position:absolute;left:820px;top:396px;width:984px;display:flex;flex-direction:column">
+<div style="display:flex"><p style="height:142px;padding:0px 60px;background:#f9b800;color:#2d3539;font-size:96px;font-weight:400;line-height:142px;white-space:nowrap">CORS</p></div>
+<div style="display:flex"><p style="height:142px;padding:0px 60px;background:#2d3539;color:#ffffff;font-size:52px;font-weight:400;line-height:142px;white-space:nowrap">¿Desde qué web me llaman?</p></div>
+</div>
+<aside>Bloque 3, 15 minutos. CORS (Cross-Origin Resource Sharing) es el bloque que más se malinterpreta, así que empiezo por lo que no es. Demo: examples/cors_demo.py, que se arranca con uv run fastapi dev examples/cors_demo.py. En la demo en vivo (paso 4) lanzamos un preflight con curl -i -X OPTIONS y una cabecera Origin permitida y otra no permitida. Conexión con el proyecto: el front de Streamlit de S5-S6 llama a la API desde el servidor de Streamlit, no desde el navegador, así que CORS solo importa si mañana hay un front JavaScript; aun así lo configuramos de forma explícita.</aside>
+</section>

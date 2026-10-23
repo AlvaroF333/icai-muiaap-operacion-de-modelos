@@ -1,0 +1,33 @@
+[project]
+name = "s10-api-security"
+version = "0.1.0"
+description = "Demos de S10: API keys, JWT, CORS, configuración, rate limiting y carga"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.146,<1.0",
+    "pydantic>=2.14,<3.0",
+    "pydantic-settings>=2.16,<3.0",
+    "pyjwt>=2.15,<3.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28,<1.0",
+    "pytest>=9.0,<10.0",
+    "ruff>=0.17,<1.0",
+]
+load = [
+    "locust>=2.46,<3.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["examples"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+extend-exclude = ["exercises", "solutions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "FAST"]

@@ -1,0 +1,20 @@
+<section id="s4-settings" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Leo la configuración del entorno</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:40px">
+<div style="background:#2d3539;padding:40px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:28px;line-height:1.4;color:#ffffff;white-space:nowrap"><span style="color:#f9b800">class</span> Settings(BaseSettings):<br>&#160;&#160;&#160;&#160;model_config = SettingsConfigDict(env_prefix="DEMO_", env_file=".env")<br><br>&#160;&#160;&#160;&#160;api_key: SecretStr<br>&#160;&#160;&#160;&#160;rate_limit_per_minute: int = Field(default=5, gt=0)<br>&#160;&#160;&#160;&#160;cors_origins: list[str] = ["http://localhost:8501"]</p>
+</div>
+<div style="display:flex;gap:56px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:15px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:32px;font-weight:300;line-height:44px">Subo .env.example sin valores reales.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:15px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:32px;font-weight:300;line-height:44px">Dejo .env fuera de Git con .gitignore.</p></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:15px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:32px;font-weight:300;line-height:44px">SecretStr oculta la clave en logs y repr.</p></div>
+<div style="display:flex;gap:28px;align-items:flex-start"><div style="padding:15px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:32px;font-weight:300;line-height:44px">Sin claves configuradas, todo da 401.</p></div>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">23</p>
+<aside>Fragmento literal de examples/limits_demo.py (4 min). pydantic-settings lee variables de entorno (y opcionalmente un fichero .env) y las valida con Pydantic: DEMO_API_KEY rellena api_key, DEMO_RATE_LIMIT_PER_MINUTE rellena el límite y DEMO_CORS_ORIGINS se escribe en JSON, por ejemplo ["http://localhost:8501"]. Si falta api_key, la app no arranca: prefiero un error al arrancar que una API abierta. Field(gt=0) impide un límite de 0 o negativo por error de configuración. SecretStr: print(settings) muestra api_key='**********'; para comparar hay que llamar explícitamente a get_secret_value(). Reglas de repositorio: .env.example documenta qué variables existen con marcadores (cambia-esta-clave), .env tiene los valores reales y está en .gitignore. Fail closed: en la práctica, si WINE_API_CLIENTS está vacío, todo endpoint protegido responde 401 en vez de quedar abierto. En producción los valores vienen de un gestor de secretos (Vault, AWS Secrets Manager, Azure Key Vault) o de las variables del contenedor (S11-S12). Pregunta: ¿qué pasa si hago commit de .env por error? La clave está comprometida aunque haga otro commit borrándola: hay que rotarla.</aside>
+</section>

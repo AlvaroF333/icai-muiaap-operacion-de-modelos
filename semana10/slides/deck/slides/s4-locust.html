@@ -1,0 +1,24 @@
+<section id="s4-locust" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">¿Aguanta mi API la carga?</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;gap:48px;align-items:flex-start">
+<div style="width:1176px;background:#2d3539;padding:32px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:24px;line-height:1.35;color:#ffffff;white-space:nowrap"><span style="color:#f9b800">class</span> DemoUser(HttpUser):<br>&#160;&#160;&#160;&#160;wait_time = between(0.5, 2)<br><br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">def</span> on_start(self) -&gt; <span style="color:#f9b800">None</span>:<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.client.headers["X-API-Key"] = os.environ["LOCUST_API_KEY"]<br><br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">@task</span>(8)<br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">def</span> score(self) -&gt; <span style="color:#f9b800">None</span>:<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.client.post("/v1/scores", json={"age": 42, "income": 38000})<br><br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">@task</span>(1)<br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">def</span> health(self) -&gt; <span style="color:#f9b800">None</span>:<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.client.get("/health")</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;border-top:6px solid #f9b800;padding:16px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:36px;font-weight:400;line-height:1.2;color:#2d3539">RPS</h3>
+<p style="font-size:28px;font-weight:300;line-height:1.35">Peticiones por segundo que sirvo.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;border-top:6px solid #f9b800;padding:16px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:36px;font-weight:400;line-height:1.2;color:#2d3539">p50 · p95</h3>
+<p style="font-size:28px;font-weight:300;line-height:1.35">Latencia típica y la de la cola lenta.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;border-top:6px solid #f9b800;padding:16px 0px 0px 0px">
+<h3 style="font-family:Montserrat, Arial, sans-serif;font-size:36px;font-weight:400;line-height:1.2;color:#2d3539">% fallos</h3>
+<p style="font-size:28px;font-weight:300;line-height:1.35">Errores y 429 sobre el total.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">26</p>
+<aside>Fragmento literal de examples/locustfile.py (3 min). Locust simula usuarios con código Python: cada DemoUser espera entre 0,5 y 2 segundos entre tareas, pone su API key al empezar (leída de LOCUST_API_KEY, nunca escrita en el fichero) y elige tareas según su peso: 8 de cada 9 veces predice y 1 de cada 9 consulta /health. Tres métricas que voy a pedir en el informe: RPS (throughput), p50 y p95 (la mediana y el percentil 95 de la latencia; el p95 es lo que sufre el usuario con peor suerte de cada veinte) y el porcentaje de fallos, donde cuentan los 429. Pregunta: si veo un 30 % de 429, ¿la API va mal? No necesariamente: el limitador está haciendo su trabajo; la conclusión depende del límite configurado frente a la carga simulada. Aviso: una prueba en el portátil mide el portátil; sirve para comparar antes y después, no para dimensionar producción. En la demo (paso 6): uv run --group load locust -f examples/locustfile.py --headless -u 20 -r 5 -t 1m --host http://127.0.0.1:8000.</aside>
+</section>

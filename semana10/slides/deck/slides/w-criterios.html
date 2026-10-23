@@ -1,0 +1,17 @@
+<section id="w-criterios" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Criterios de aceptación</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:28px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:45%;color:#ffffff;font-weight:400;text-align:left">Criterio</th><th style="width:55%;color:#ffffff;font-weight:400;text-align:left">Evidencia</th></tr>
+<tr><td>La suite completa pasa</td><td>uv run pytest -q sin fallos</td></tr>
+<tr><td>Sin key 401, sin scope 403, exceso 429</td><td>test_s10_2, test_s10_3 y test_s10_4</td></tr>
+<tr><td>Ninguna clave en Git ni en logs</td><td>.env.example con marcadores y .env ignorado</td></tr>
+<tr><td>CORS y docs salen de la configuración</td><td>test_s10_5</td></tr>
+<tr><td>El contrato 2.0.0 está versionado</td><td>contracts/openapi.json con securitySchemes</td></tr>
+<tr><td>Hay evidencia de carga</td><td>reports/README.md con p50, p95, RPS y % 429</td></tr>
+<tr><td>El código pasa Ruff</td><td>ruff check y ruff format --check</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">36</p>
+<aside>Estos criterios están también en el README del ejercicio. Los tests de S9 se mantienen como regresión y deben seguir en verde: si se rompen al añadir autenticación, suele faltar la API key en el cliente de pruebas o la cabecera X-Request-Id en las respuestas de error. Comprobación manual de secretos: git status no debe mostrar .env, y git grep cambia-esta-clave solo debe encontrar .env.example. El snapshot de OpenAPI (S10.6) debe mostrar version 2.0.0, el esquema APIKeyHeader en components.securitySchemes y las respuestas 401, 403 y 429 documentadas con ErrorResponse. Los tests que vienen escritos no se modifican; si un test parece incorrecto, se comenta con el docente.</aside>
+</section>

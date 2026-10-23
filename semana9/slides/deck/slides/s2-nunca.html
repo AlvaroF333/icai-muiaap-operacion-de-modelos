@@ -1,0 +1,11 @@
+<section id="s2-nunca" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Lo que nunca sale en un error</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;gap:36px;align-items:flex-start"><div style="padding:22px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:44px;font-weight:300;line-height:58px">No devuelvo trazas, rutas de ficheros ni versiones de librerías.</p></div>
+<div style="display:flex;gap:36px;align-items:flex-start"><div style="padding:22px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:44px;font-weight:300;line-height:58px">No repito el payload: puede contener datos personales.</p></div>
+<div style="display:flex;gap:36px;align-items:flex-start"><div style="padding:22px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:44px;font-weight:300;line-height:58px">Un 500 dice lo mínimo; el detalle va al log con el request_id.</p></div>
+<div style="display:flex;gap:36px;align-items:flex-start"><div style="padding:22px 0px 0px 0px"><div style="width:14px;height:14px;background:#383e46"></div></div><p style="font-size:44px;font-weight:300;line-height:58px">Pruebo los 500 con raise_server_exceptions=False.</p></div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">18</p>
+<aside>Demo: GET /v1/boom en errors_demo.py lanza RuntimeError("password=TU_SECRETO ..."). Sin manejador, el cliente no ve el secreto pero tampoco recibe nuestro sobre; con manejador, recibe internal_error y el detalle queda en el log. TestClient relanza por defecto las excepciones del servidor; para ver lo que recibe el cliente hay que crear TestClient(app, raise_server_exceptions=False). Enlaza con S10 (seguridad) y S13 (monitorización por request_id).</aside>
+</section>

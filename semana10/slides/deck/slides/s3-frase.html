@@ -1,0 +1,7 @@
+<section id="s3-frase" data-transition="fade" style="background:#0f171f;color:#ffffff;font-family:Montserrat, Arial, sans-serif;padding:128px 200px;display:flex;flex-direction:column;justify-content:center;align-items:center">
+<div style="position:absolute;left:116px;top:140px;width:1200px;display:flex"><p style="height:142px;padding:0px 60px;background:#f9b800;color:#2d3539;font-size:56px;font-weight:400;line-height:142px;white-space:nowrap">CORS</p></div>
+<div style="width:1520px;border:6px solid #ffffff;padding:72px 96px">
+<p style="font-size:52px;font-weight:300;line-height:78px;letter-spacing:3px;text-transform:uppercase;text-align:center;color:#ffffff">CORS no protege mi API: protege al usuario del navegador. curl lo ignora.</p>
+</div>
+<aside>Idea central del bloque (3 min). El navegador aplica la política del mismo origen: el JavaScript de una web (por ejemplo, una página maliciosa que el usuario visita) no puede leer respuestas de otro origen salvo que ese origen lo permita con cabeceras CORS. Quien se protege es el usuario: evita que una web ajena use su navegador, con sus cookies o su red interna, para leer datos de mi API. Pero curl, Python, Postman o Locust no aplican CORS: si alguien tiene la URL, llama directamente. Pregunta: si configuro CORS solo para http://localhost:8501, ¿puede un script de Python llamar a mi API? Sí; por eso la API key sigue siendo obligatoria. Origen = esquema + host + puerto: http://localhost:8501 y http://localhost:8000 son orígenes distintos.</aside>
+</section>

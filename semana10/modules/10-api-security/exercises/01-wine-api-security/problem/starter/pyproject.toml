@@ -1,0 +1,41 @@
+[project]
+name = "wine-api-security-starter"
+version = "1.1.0"
+description = "Wine Quality API de S10: API keys, scopes, rate limiting, CORS y secretos"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.146,<1.0",
+    "pydantic>=2.14,<3.0",
+    "pydantic-settings>=2.16,<3.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28,<1.0",
+    "pytest>=9.0,<10.0",
+    "ruff>=0.17,<1.0",
+]
+load = [
+    "locust>=2.46,<3.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wine_api"]
+
+[tool.fastapi]
+entrypoint = "wine_api.main:app"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "FAST"]

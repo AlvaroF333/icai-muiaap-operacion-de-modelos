@@ -1,0 +1,11 @@
+<section id="s2-handlers" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Traduzco errores de dominio a HTTP</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:36px">
+<div style="background:#2d3539;padding:40px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:28px;line-height:1.4;color:#ffffff;white-space:nowrap"><span style="color:#f9b800">class</span> ModelUnavailableError(Exception):<br>&#160;&#160;&#160;&#160;<span style="color:#aab2b8">"""Error de dominio: no sabe nada de HTTP."""</span><br><br><span style="color:#f9b800">@app.exception_handler</span>(ModelUnavailableError)<br><span style="color:#f9b800">async def</span> handle_model_unavailable(request, exc):<br>&#160;&#160;&#160;&#160;<span style="color:#f9b800">return</span> JSONResponse(<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;status_code=503,<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;content=error_body("model_unavailable", "Model not ready"),<br>&#160;&#160;&#160;&#160;)</p>
+</div>
+<p style="font-size:36px;font-weight:300;line-height:48px">La ruta lanza un error de dominio; el manejador decide el status y el sobre.</p>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">16</p>
+<aside>examples/errors_demo.py. El predictor (dominio) no importa HTTPException: así se puede reutilizar desde un batch, una CLI o un test sin HTTP. El manejador es el único sitio que conoce el status. En el workshop generalizamos: una clase base WineApiError con status_code, code y message como atributos de clase, y un único manejador para toda la jerarquía.</aside>
+</section>

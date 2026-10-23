@@ -1,0 +1,10 @@
+<section id="w-comandos" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#f9b800;color:#2d3539;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Comandos que voy a usar</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column">
+<div style="background:#2d3539;padding:40px 48px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:28px;line-height:1.5;color:#ffffff;white-space:nowrap">cd semana9/modules/09-api-professional/exercises/02-wine-api-hardening/problem/starter<br>uv sync --locked<br>uv run pytest -q tests/test_s9_1_output_contract.py<br>uv run fastapi dev&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#aab2b8"># http://127.0.0.1:8000/docs</span><br>WINE_API_MODE=unavailable uv run fastapi dev<br>uv run python -m wine_api.export_openapi<br>uv run ruff check . &amp;&amp; uv run ruff format --check .</p>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">33</p>
+<aside>fastapi dev no necesita la ruta del archivo: lee el entrypoint de [tool.fastapi] en pyproject.toml (wine_api.main:app), como recomienda la skill oficial. WINE_API_MODE=unavailable arranca con UnavailablePredictor para ver el 503 en /health y en /v1/predictions. Ruff incluye las reglas FAST de FastAPI. En Windows PowerShell: $env:WINE_API_MODE="unavailable"; uv run fastapi dev.</aside>
+</section>

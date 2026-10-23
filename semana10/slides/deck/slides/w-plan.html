@@ -1,0 +1,17 @@
+<section id="w-plan" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Plan de la práctica · 2 h</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:28px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:25%;color:#ffffff;font-weight:400;text-align:left">Paso</th><th style="width:43%;color:#ffffff;font-weight:400;text-align:left">Qué hago</th><th style="width:20%;color:#ffffff;font-weight:400;text-align:left">Tests</th><th style="width:12%;color:#ffffff;font-weight:400;text-align:right">Tiempo</th></tr>
+<tr><td>S10.1 · Configuración</td><td>Settings, clientes y .env.example</td><td>test_s10_1</td><td style="text-align:right">15 min</td></tr>
+<tr><td>S10.2 · Autenticación</td><td>API key, 401 y WWW-Authenticate</td><td>test_s10_2</td><td style="text-align:right">25 min</td></tr>
+<tr><td>S10.3 · Autorización</td><td>Scopes y GET /v1/admin/usage</td><td>test_s10_3</td><td style="text-align:right">15 min</td></tr>
+<tr><td>S10.4 · Límite</td><td>Ventana fija, 429 y Retry-After</td><td>test_s10_4</td><td style="text-align:right">25 min</td></tr>
+<tr><td>S10.5 · CORS</td><td>Orígenes de settings y docs_enabled</td><td>test_s10_5</td><td style="text-align:right">10 min</td></tr>
+<tr><td>S10.6 · S10.7</td><td>Contrato 2.0.0 y prueba de carga</td><td>test_s10_6 · Locust</td><td style="text-align:right">20 min</td></tr>
+<tr style="background:#f9b800"><td style="color:#2d3539">Debrief</td><td style="color:#2d3539">Informes de Locust por parejas</td><td style="color:#2d3539">Suite completa</td><td style="text-align:right;color:#2d3539">10 min</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">33</p>
+<aside>Checkpoints en voz alta al final de cada paso: ¿qué fichero de tests está en verde? El orden importa: sin Settings (S10.1) no hay clientes que autenticar; sin autenticación (S10.2) no hay a quién aplicar scopes (S10.3) ni límite (S10.4). Si alguien se atasca en S10.2, revisar tres cosas: auto_error=False en APIKeyHeader, compare_digest con get_secret_value() y la cabecera WWW-Authenticate en el error. En S10.4 el reloj se inyecta: los tests no esperan 60 segundos reales. S10.6: regenerar contracts/openapi.json con uv run python -m wine_api.export_openapi y revisar el diff: deben aparecer components.securitySchemes y las respuestas 401, 403 y 429. S10.7 no es un test de pytest: la evidencia es el informe en reports/. Debrief: cada pareja enseña su p95 y su porcentaje de 429 y explica por qué salen esos números con su límite configurado.</aside>
+</section>

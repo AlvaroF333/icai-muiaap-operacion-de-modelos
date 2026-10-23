@@ -1,0 +1,14 @@
+<section id="s4-piramide" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">Qué pruebo y con qué</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:30px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:18%;color:#ffffff;font-weight:400;text-align:left">Nivel</th><th style="width:46%;color:#ffffff;font-weight:400;text-align:left">Qué demuestra</th><th style="width:36%;color:#ffffff;font-weight:400;text-align:left">Herramienta</th></tr>
+<tr><td>Esquemas</td><td>Rangos, tipos y serializadores</td><td>Pydantic y pytest</td></tr>
+<tr><td>API</td><td>Status, sobre de error y cabeceras</td><td>TestClient, sin red</td></tr>
+<tr><td>Contrato</td><td>/openapi.json no cambia sin querer</td><td>Snapshot versionado en Git</td></tr>
+<tr><td>Humo</td><td>El servicio arranca de verdad</td><td>fastapi run y curl</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">25</p>
+<aside>Pruebo comportamiento observable (status, JSON, cabeceras), no detalles internos: si mañana cambio el predictor por el bundle de S4, los tests de API siguen valiendo. TestClient ejecuta la app en el mismo proceso con HTTPX, sin abrir puertos, así que corre en CI. La prueba de humo se queda fuera de pytest en S9; en S11-S12 se hará contra el contenedor.</aside>
+</section>

@@ -1,0 +1,26 @@
+<section id="s3-openapi" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">¿Dónde vive cada parte del contrato?</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;border-top:8px solid #f9b800;padding:32px 0px 0px 0px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:30px;color:#2d3539">FastAPI(...)</p>
+<p style="font-size:32px;font-weight:300;line-height:1.4">title, version, summary, description y openapi_tags.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;border-top:8px solid #f9b800;padding:32px 0px 0px 0px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:30px;color:#2d3539">@router.post(...)</p>
+<p style="font-size:32px;font-weight:300;line-height:1.4">summary, docstring, tags y responses por status.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;border-top:8px solid #f9b800;padding:32px 0px 0px 0px">
+<p style="font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:30px;color:#2d3539">Field(...)</p>
+<p style="font-size:32px;font-weight:300;line-height:1.4">description, rangos, examples y json_schema_extra.</p>
+</div>
+</div>
+<div style="display:flex;gap:24px">
+<p style="background:#2d3539;color:#ffffff;font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:28px;padding:16px 28px">/openapi.json</p>
+<p style="background:#2d3539;color:#ffffff;font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:28px;padding:16px 28px">/docs</p>
+<p style="background:#2d3539;color:#ffffff;font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:28px;padding:16px 28px">/redoc</p>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">20</p>
+<aside>OpenAPI no es documentación aparte: FastAPI la genera a partir del código. Si el código cambia, la documentación cambia. Por eso «no miente», siempre que declaremos lo que de verdad hacemos: si devuelvo un ErrorResponse en el 422 pero no lo declaro, Swagger seguirá mostrando HTTPValidationError, y eso sí es mentir. /openapi.json es lo que leen las máquinas (generadores de clientes, Postman, gateways); /docs y /redoc, las personas.</aside>
+</section>

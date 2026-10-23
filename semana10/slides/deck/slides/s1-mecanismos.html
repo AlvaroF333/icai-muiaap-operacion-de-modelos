@@ -1,0 +1,14 @@
+<section id="s1-mecanismos" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">¿Con qué me identifico?</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:28px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:18%;color:#ffffff;font-weight:400;text-align:left">Mecanismo</th><th style="width:28%;color:#ffffff;font-weight:400;text-align:left">Qué es</th><th style="width:27%;color:#ffffff;font-weight:400;text-align:left">Cuándo lo uso</th><th style="width:27%;color:#ffffff;font-weight:400;text-align:left">Riesgo principal</th></tr>
+<tr style="background:#f9b800"><td style="color:#2d3539">API key</td><td style="color:#2d3539">Un secreto por cliente</td><td style="color:#2d3539">Servicio a servicio</td><td style="color:#2d3539">Vale hasta que la revoco</td></tr>
+<tr><td>JWT Bearer</td><td>Token firmado con claims</td><td>Usuarios tras un login</td><td>Claims sin validar</td></tr>
+<tr><td>OAuth2 / OIDC</td><td>Tokens emitidos por un IdP</td><td>SSO corporativo</td><td>Configuración compleja</td></tr>
+<tr><td>mTLS</td><td>Certificado por cliente</td><td>Red interna o regulada</td><td>Rotar certificados</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">8</p>
+<aside>Panorama de mecanismos (5 min); no hay uno mejor, depende de quién llama. API key: un secreto opaco por cliente; perfecto para máquinas (el front de Streamlit, un batch, un partner). Es lo que implementamos en la práctica, por eso va resaltada. JWT Bearer: un token firmado que lleva dentro quién es el usuario y qué puede hacer; caduca solo. OAuth2 / OpenID Connect: el estándar con el que un proveedor de identidad (IdP: Entra ID, Google, Okta, Keycloak) emite esos tokens; es lo que hay detrás de «Iniciar sesión con Microsoft». mTLS: TLS mutuo, el cliente también presenta un certificado; habitual en redes internas, banca y service mesh. Pregunta: ¿qué usaríais para que el front de S5-S6 llame a la API? Una API key de servicio. ¿Y si cada médico o analista tuviera que identificarse? Login con OIDC y JWT. Mencionar que en FastAPI todos se declaran con utilidades de fastapi.security, lo que los documenta en OpenAPI.</aside>
+</section>

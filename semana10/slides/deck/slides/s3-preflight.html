@@ -1,0 +1,22 @@
+<section id="s3-preflight" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">¿Qué pregunta el navegador antes?</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;gap:40px;align-items:flex-start">
+<p style="width:88px;height:88px;background:#f9b800;color:#2d3539;font-size:44px;font-weight:400;line-height:88px;text-align:center">1</p>
+<div style="width:560px;display:flex;flex-direction:column"><p style="font-size:32px;font-weight:400;line-height:44px;color:#2d3539">El navegador pregunta con un preflight.</p></div>
+<p style="flex:1;font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#383e46;white-space:nowrap">OPTIONS /v1/predictions<br>Origin: http://localhost:8501<br>Access-Control-Request-Headers: x-api-key</p>
+</div>
+<div style="display:flex;gap:40px;align-items:flex-start">
+<p style="width:88px;height:88px;background:#2d3539;color:#ffffff;font-size:44px;font-weight:400;line-height:88px;text-align:center">2</p>
+<div style="width:560px;display:flex;flex-direction:column"><p style="font-size:32px;font-weight:400;line-height:44px;color:#2d3539">La API responde qué origen y cabeceras admite.</p></div>
+<p style="flex:1;font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#383e46;white-space:nowrap">Access-Control-Allow-Origin: http://localhost:8501<br>Access-Control-Allow-Headers: x-api-key</p>
+</div>
+<div style="display:flex;gap:40px;align-items:flex-start">
+<p style="width:88px;height:88px;background:#2d3539;color:#ffffff;font-size:44px;font-weight:400;line-height:88px;text-align:center">3</p>
+<div style="width:560px;display:flex;flex-direction:column"><p style="font-size:32px;font-weight:400;line-height:44px;color:#2d3539">Si encaja, envía la petición real.</p></div>
+<p style="flex:1;font-family:'JetBrains Mono', Menlo, Consolas, monospace;font-size:26px;line-height:1.4;color:#383e46;white-space:nowrap">POST /v1/predictions<br>X-API-Key: TU_API_KEY</p>
+</div>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">20</p>
+<aside>Secuencia del preflight (6 min). Una petición con una cabecera no estándar como X-API-Key, o con Content-Type: application/json, no es «simple», así que el navegador pregunta antes con OPTIONS. Envía Origin (quién soy) y Access-Control-Request-Headers (qué cabeceras quiero mandar). Si la API responde con Access-Control-Allow-Origin igual a ese origen y permite las cabeceras, el navegador envía el POST real; si no, la petición real ni se envía y en la consola del navegador aparece un error de CORS. Detalle importante: el preflight no lleva la API key, así que CORSMiddleware lo responde antes de que actúen las dependencias de autenticación. Por eso CORSMiddleware se añade como middleware y no como dependencia. Demo (paso 4): curl -i -X OPTIONS http://127.0.0.1:8000/v1/scores -H "Origin: http://localhost:8501" -H "Access-Control-Request-Method: POST" -H "Access-Control-Request-Headers: x-api-key". Repetir con Origin: https://evil.example y comprobar que falta Access-Control-Allow-Origin.</aside>
+</section>

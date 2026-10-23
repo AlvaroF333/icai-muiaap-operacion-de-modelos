@@ -1,0 +1,15 @@
+<section id="s4-checklist" data-transition="fade" style="background:#ffffff;color:#383e46;font-family:Montserrat, Arial, sans-serif;padding:140px 116px 160px;display:flex;flex-direction:column">
+<div style="display:flex"><h2 style="height:142px;padding:0px 72px;background:#2d3539;color:#ffffff;font-family:Montserrat, Arial, sans-serif;font-size:56px;font-weight:400;line-height:142px;letter-spacing:1px;white-space:nowrap">¿Qué riesgos de OWASP cubro hoy?</h2></div>
+<div style="padding:98px 0px 0px 0px;display:flex;flex-direction:column;gap:40px">
+<table style="width:1688px;font-family:Montserrat, Arial, sans-serif;font-size:28px;font-weight:300;color:#383e46">
+<tr style="background:#2d3539"><th style="width:50%;color:#ffffff;font-weight:400;text-align:left">OWASP API Security Top 10 2023</th><th style="width:50%;color:#ffffff;font-weight:400;text-align:left">Lo que hago en la Wine Quality API</th></tr>
+<tr><td>API2 Broken Authentication</td><td>API key en cabecera, compare_digest y 401</td></tr>
+<tr><td>API5 Broken Function Level Authorization</td><td>Scopes en el router y 403 en admin</td></tr>
+<tr><td>API4 Unrestricted Resource Consumption</td><td>Límite por cliente, 429 y Retry-After</td></tr>
+<tr><td>API8 Security Misconfiguration</td><td>CORS explícito, secrets fuera y /docs opcional</td></tr>
+</table>
+<p style="font-size:36px;font-weight:300;line-height:48px">Cubro cuatro de los diez riesgos: es seguridad mínima, no una auditoría.</p>
+</div>
+<p style="position:absolute;left:1604px;bottom:64px;width:200px;text-align:right;font-family:Calibri, Carlito, Arial, sans-serif;font-size:24px;color:#888888">27</p>
+<aside>Cierre de la teoría (2 min). OWASP API Security Top 10, edición 2023, es la lista de referencia de riesgos en APIs. Mapeo lo de hoy a cuatro categorías: API2 Broken Authentication (autenticación débil o mal implementada), API5 Broken Function Level Authorization (un cliente normal llega a funciones de administración), API4 Unrestricted Resource Consumption (sin límites de consumo) y API8 Security Misconfiguration (CORS abierto, documentación expuesta, secretos en el código). docs_enabled=False permite apagar /docs, /redoc y /openapi.json en un despliegue público si así se decide. Lo que no cubrimos y conviene nombrar: API1 Broken Object Level Authorization (un cliente accede a objetos de otro; aquí no hay objetos por usuario) y API9 Improper Inventory Management (versiones antiguas olvidadas expuestas). Pregunta: ¿qué categoría tocaría si /v1/admin/usage devolviera las claves? API3 Broken Object Property Level Authorization, exposición de propiedades sensibles; por eso el endpoint nunca las incluye. Transición: ahora lo vemos todo funcionando en la demo.</aside>
+</section>
