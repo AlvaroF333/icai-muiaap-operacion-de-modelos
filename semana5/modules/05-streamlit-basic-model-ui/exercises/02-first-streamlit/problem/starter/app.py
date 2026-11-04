@@ -4,13 +4,17 @@ from __future__ import annotations
 
 import os
 from collections.abc import Callable
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
 from model_ui.contracts import PredictionPayload
 from model_ui.errors import ArtifactUnavailableError, InputContractError
 from model_ui.gateway import InferenceGateway, PackagedBundleGateway
+from model_ui.presentation import confidence_caption, quality_label
 from model_ui.ui_schema import FIELD_SPECS
+
+FORM_KEY = "wine_quality_form"
 
 
 def build_gateway() -> InferenceGateway:
@@ -39,23 +43,52 @@ def render_inference_error(st: Any) -> None:
     st.info("Revisa los datos y la compatibilidad del bundle de S4.")
 
 
-def collect_values(st: Any) -> tuple[bool, dict[str, float]]:
-    """TODO: renderiza ``FIELD_SPECS`` dentro de un único ``st.form``.
+def _display_format(step: float) -> str:
+    """Muestra tantos decimales como indica el ``step`` (p. ej. densidad)."""
 
-    Cada ``number_input`` debe recibir label, rango, default, step y una key
+    decimals = max(0, -int(Decimal(str(step)).as_tuple().exponent))
+    return f"%.{decimals}f"
+
+
+def collect_values(st: Any) -> tuple[bool, dict[str, float]]:
+    """Renderiza ``FIELD_SPECS`` dentro de un único ``st.form``.
+
+    Cada ``number_input`` recibe label, rango, default, step y una key
     estable. Devuelve ``(submitted, values)`` sin llamar al gateway.
     """
 
-    raise NotImplementedError(
-        f"TODO: renderiza los {len(FIELD_SPECS)} campos de FIELD_SPECS"
-    )
+    with st.form(FORM_KEY):
+        values = {
+            spec.name: st.number_input(
+                spec.label,
+                min_value=spec.min_value,
+                max_value=spec.max_value,
+                value=spec.default,
+                step=spec.step,
+                format=_display_format(spec.step),
+                key=f"input_{spec.name}",
+            )
+            for spec in FIELD_SPECS
+        }
+        submitted = st.form_submit_button("Ejecutar inferencia")
+    return submitted, values
 
 
 def render_prediction(st: Any, prediction: PredictionPayload) -> None:
-    """TODO: presenta los cuatro campos de ``PredictionPayload``."""
+    """Presenta los cuatro campos de ``PredictionPayload`` sin recalcularlos."""
 
-    raise NotImplementedError(
-        "TODO: presenta quality_band, confidence y las dos versiones"
+    st.success(f"Predicción recibida: {quality_label(prediction)}.")
+    band_column, confidence_column = st.columns(2)
+    band_column.metric("quality_band", prediction.quality_band)
+    confidence_column.metric("confidence", f"{prediction.confidence:.2f}")
+    st.caption(
+        f"{confidence_caption(prediction)} Es la probabilidad que asigna el "
+        "estimador del bundle a esta banda: no está calibrada ni garantiza la "
+        "calidad real del vino."
+    )
+    st.write(
+        f"Trazabilidad · model_version: `{prediction.model_version}` · "
+        f"preprocessing_version: `{prediction.preprocessing_version}`"
     )
 
 
