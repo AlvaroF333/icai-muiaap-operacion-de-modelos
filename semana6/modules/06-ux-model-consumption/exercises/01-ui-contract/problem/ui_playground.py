@@ -61,9 +61,11 @@ def render_preview(preview: Preview) -> None:
     assert preview.confidence is not None
     assert preview.latency_ms is not None
 
-    st.success(preview.quality_label)
+    # Cambio de la pareja: sin banner `st.success`. Duplicaba la categoría y
+    # pintaba de verde también «Requiere revisión», sugiriendo que el modelo
+    # «acierta». El éxito es de la operación; la categoría va en una métrica.
     category, confidence, latency = st.columns(3)
-    category.metric("Resultado", preview.quality_label)
+    category.metric("Categoría", preview.quality_label)
     confidence.metric("Confianza", f"{preview.confidence:.0%}")
     latency.metric("Latencia", f"{preview.latency_ms:.0f} ms")
 

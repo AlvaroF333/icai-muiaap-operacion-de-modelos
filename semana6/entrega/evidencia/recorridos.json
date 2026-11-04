@@ -1,0 +1,240 @@
+[
+  {
+    "paso": "inicio",
+    "metricas": {},
+    "mensajes": [
+      "info: Introduce los valores de la muestra y pulsa «Ejecutar inferencia». El resultado aparecerá aquí.",
+      "caption: S6: la app de S5 ahora conserva estado y comunica la operación.",
+      "caption: Formulario de S5: la inferencia se envía al pulsar el botón.",
+      "caption: Solo se muestran agregados; no se guardan las features en Telemetry."
+    ],
+    "telemetria": {
+      "requests_total": 0,
+      "requests_success": 0,
+      "requests_error": 0,
+      "errors_by_code": {},
+      "latency_mean_ms": null,
+      "latency_p95_ms": null,
+      "model_versions": [],
+      "preprocessing_versions": []
+    },
+    "reintentar_habilitado": false,
+    "limpiar_habilitado": false
+  },
+  {
+    "paso": "exito",
+    "metricas": {
+      "Categoría": "Resultado aceptable",
+      "Confianza del modelo": "74%",
+      "Latencia": "0 ms"
+    },
+    "mensajes": [
+      "info: **Confianza intermedia.** Usa el resultado como señal orientativa y revisa su contexto antes de actuar.",
+      "caption: S6: la app de S5 ahora conserva estado y comunica la operación.",
+      "caption: Formulario de S5: la inferencia se envía al pulsar el botón.",
+      "caption: La respuesta quedó dentro del objetivo de la demo. Objetivo: 300 ms.",
+      "caption: Solo se muestran agregados; no se guardan las features en Telemetry.",
+      "markdown: - request_id: `a523f1f07f`\n- model_version: `demo-ui-v1`\n- preprocessing_version: `wine-red-features-v1`"
+    ],
+    "telemetria": {
+      "requests_total": 1,
+      "requests_success": 1,
+      "requests_error": 0,
+      "errors_by_code": {},
+      "latency_mean_ms": 0.131,
+      "latency_p95_ms": 0.131,
+      "model_versions": [
+        "demo-ui-v1"
+      ],
+      "preprocessing_versions": [
+        "wine-red-features-v1"
+      ]
+    },
+    "reintentar_habilitado": false,
+    "limpiar_habilitado": true
+  },
+  {
+    "paso": "rerun",
+    "metricas": {
+      "Categoría": "Resultado aceptable",
+      "Confianza del modelo": "74%",
+      "Latencia": "0 ms"
+    },
+    "mensajes": [
+      "info: **Confianza intermedia.** Usa el resultado como señal orientativa y revisa su contexto antes de actuar.",
+      "caption: S6: la app de S5 ahora conserva estado y comunica la operación.",
+      "caption: Formulario de S5: la inferencia se envía al pulsar el botón.",
+      "caption: La respuesta quedó dentro del objetivo de la demo. Objetivo: 300 ms.",
+      "caption: Solo se muestran agregados; no se guardan las features en Telemetry.",
+      "markdown: - request_id: `a523f1f07f`\n- model_version: `demo-ui-v1`\n- preprocessing_version: `wine-red-features-v1`"
+    ],
+    "telemetria": {
+      "requests_total": 1,
+      "requests_success": 1,
+      "requests_error": 0,
+      "errors_by_code": {},
+      "latency_mean_ms": 0.131,
+      "latency_p95_ms": 0.131,
+      "model_versions": [
+        "demo-ui-v1"
+      ],
+      "preprocessing_versions": [
+        "wine-red-features-v1"
+      ]
+    },
+    "reintentar_habilitado": false,
+    "limpiar_habilitado": true
+  },
+  {
+    "paso": "limpiar",
+    "metricas": {},
+    "mensajes": [
+      "info: Introduce los valores de la muestra y pulsa «Ejecutar inferencia». El resultado aparecerá aquí.",
+      "caption: S6: la app de S5 ahora conserva estado y comunica la operación.",
+      "caption: Formulario de S5: la inferencia se envía al pulsar el botón.",
+      "caption: Solo se muestran agregados; no se guardan las features en Telemetry."
+    ],
+    "telemetria": {
+      "requests_total": 1,
+      "requests_success": 1,
+      "requests_error": 0,
+      "errors_by_code": {},
+      "latency_mean_ms": 0.131,
+      "latency_p95_ms": 0.131,
+      "model_versions": [
+        "demo-ui-v1"
+      ],
+      "preprocessing_versions": [
+        "wine-red-features-v1"
+      ]
+    },
+    "reintentar_habilitado": false,
+    "limpiar_habilitado": false
+  },
+  {
+    "paso": "bundle_ausente",
+    "metricas": {},
+    "mensajes": [
+      "info: **Qué puedes hacer:** Pulsa «Reintentar» más tarde; si persiste, comunica el request_id al equipo que opera la app.",
+      "error: **Modelo no disponible.** El modelo no está disponible ahora mismo; no se ha hecho ninguna predicción.",
+      "caption: S6: la app de S5 ahora conserva estado y comunica la operación.",
+      "caption: Formulario de S5: la inferencia se envía al pulsar el botón.",
+      "caption: Referencia de la petición: `c382abc8c4`",
+      "caption: Solo se muestran agregados; no se guardan las features en Telemetry."
+    ],
+    "telemetria": {
+      "requests_total": 2,
+      "requests_success": 1,
+      "requests_error": 1,
+      "errors_by_code": {
+        "artifact_unavailable": 1
+      },
+      "latency_mean_ms": 0.068,
+      "latency_p95_ms": 0.131,
+      "model_versions": [
+        "demo-ui-v1"
+      ],
+      "preprocessing_versions": [
+        "wine-red-features-v1"
+      ]
+    },
+    "reintentar_habilitado": true,
+    "limpiar_habilitado": true
+  },
+  {
+    "paso": "reintentar",
+    "metricas": {},
+    "mensajes": [
+      "info: **Qué puedes hacer:** Pulsa «Reintentar» más tarde; si persiste, comunica el request_id al equipo que opera la app.",
+      "error: **Modelo no disponible.** El modelo no está disponible ahora mismo; no se ha hecho ninguna predicción.",
+      "caption: S6: la app de S5 ahora conserva estado y comunica la operación.",
+      "caption: Formulario de S5: la inferencia se envía al pulsar el botón.",
+      "caption: Referencia de la petición: `7b8c096baa`",
+      "caption: Solo se muestran agregados; no se guardan las features en Telemetry."
+    ],
+    "telemetria": {
+      "requests_total": 3,
+      "requests_success": 1,
+      "requests_error": 2,
+      "errors_by_code": {
+        "artifact_unavailable": 2
+      },
+      "latency_mean_ms": 0.048,
+      "latency_p95_ms": 0.131,
+      "model_versions": [
+        "demo-ui-v1"
+      ],
+      "preprocessing_versions": [
+        "wine-red-features-v1"
+      ]
+    },
+    "reintentar_habilitado": true,
+    "limpiar_habilitado": true
+  },
+  {
+    "paso": "salida_fuera_de_contrato",
+    "metricas": {},
+    "mensajes": [
+      "info: **Qué puedes hacer:** Pulsa «Reintentar»; si persiste, comunica el request_id.",
+      "error: **No se pudo obtener una predicción válida.** El modelo respondió, pero su salida no cumple el contrato y no se muestra.",
+      "caption: S6: la app de S5 ahora conserva estado y comunica la operación.",
+      "caption: Formulario de S5: la inferencia se envía al pulsar el botón.",
+      "caption: Referencia de la petición: `134ba95e52`",
+      "caption: Solo se muestran agregados; no se guardan las features en Telemetry."
+    ],
+    "telemetria": {
+      "requests_total": 4,
+      "requests_success": 1,
+      "requests_error": 3,
+      "errors_by_code": {
+        "artifact_unavailable": 2,
+        "prediction_error": 1
+      },
+      "latency_mean_ms": 0.062,
+      "latency_p95_ms": 0.131,
+      "model_versions": [
+        "demo-ui-v1"
+      ],
+      "preprocessing_versions": [
+        "wine-red-features-v1"
+      ]
+    },
+    "reintentar_habilitado": true,
+    "limpiar_habilitado": true
+  },
+  {
+    "paso": "lenta_confianza_baja",
+    "metricas": {
+      "Categoría": "Requiere revisión",
+      "Confianza del modelo": "42%",
+      "Latencia": "801 ms"
+    },
+    "mensajes": [
+      "warning: **Confianza baja.** El resultado es orientativo y requiere revisión; la confianza no es una garantía.",
+      "warning: **Por encima del objetivo.** La respuesta llegó, pero la latencia supera el objetivo técnico de la demo. Objetivo: 300 ms.",
+      "caption: S6: la app de S5 ahora conserva estado y comunica la operación.",
+      "caption: Formulario de S5: la inferencia se envía al pulsar el botón.",
+      "caption: Solo se muestran agregados; no se guardan las features en Telemetry.",
+      "markdown: - request_id: `c20ae1a2f1`\n- model_version: `demo-ui-v1`\n- preprocessing_version: `wine-red-features-v1`"
+    ],
+    "telemetria": {
+      "requests_total": 5,
+      "requests_success": 2,
+      "requests_error": 3,
+      "errors_by_code": {
+        "artifact_unavailable": 2,
+        "prediction_error": 1
+      },
+      "latency_mean_ms": 160.173,
+      "latency_p95_ms": 800.616,
+      "model_versions": [
+        "demo-ui-v1"
+      ],
+      "preprocessing_versions": [
+        "wine-red-features-v1"
+      ]
+    },
+    "reintentar_habilitado": false,
+    "limpiar_habilitado": true
+  }
+]

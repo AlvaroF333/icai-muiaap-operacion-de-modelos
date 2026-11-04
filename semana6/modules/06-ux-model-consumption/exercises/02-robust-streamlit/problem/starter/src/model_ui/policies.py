@@ -1,6 +1,7 @@
 """Políticas explícitas que el alumnado puede reutilizar en la UI."""
 
 from dataclasses import dataclass
+from math import isfinite
 
 from model_ui.contracts import ConfidenceLevel, LatencyStatus
 
@@ -27,14 +28,30 @@ DEFAULT_LATENCY_POLICY = LatencyPolicy()
 def classify_confidence(
     confidence: float, policy: ConfidencePolicy = DEFAULT_CONFIDENCE_POLICY
 ) -> ConfidenceLevel:
-    """TODO: valida [0, 1] y devuelve low/medium/high según policy."""
+    """Valida [0, 1] y devuelve low/medium/high según policy.
 
-    raise NotImplementedError("TODO: clasifica la confianza con la política acordada")
+    Límites: `< low_below` es low, `>= high_from` es high y el resto medium.
+    """
+
+    if not isfinite(confidence) or not 0.0 <= confidence <= 1.0:
+        raise ValueError("La confianza debe estar entre 0 y 1.")
+    if confidence < policy.low_below:
+        return "low"
+    if confidence >= policy.high_from:
+        return "high"
+    return "medium"
 
 
 def classify_latency(
     latency_ms: float, policy: LatencyPolicy = DEFAULT_LATENCY_POLICY
 ) -> LatencyStatus:
-    """TODO: devuelve within_target o above_target para una latencia válida."""
+    """Devuelve within_target o above_target para una latencia válida.
 
-    raise NotImplementedError("TODO: clasifica la latencia")
+    El objetivo es inclusivo: exactamente `target_ms` sigue dentro del objetivo.
+    """
+
+    if not isfinite(latency_ms) or latency_ms < 0:
+        raise ValueError("La latencia debe ser un número finito mayor o igual que 0.")
+    if latency_ms <= policy.target_ms:
+        return "within_target"
+    return "above_target"
