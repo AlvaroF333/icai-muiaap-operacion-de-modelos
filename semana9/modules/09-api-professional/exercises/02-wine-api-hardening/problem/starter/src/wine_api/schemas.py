@@ -74,10 +74,19 @@ class Prediction(BaseModel):
     # `quality_band` (usa QualityBand, no `str`), `confidence` (entre 0 y 1),
     # `model_version` y `preprocessing_version`. Lo que no declares aquí no
     # saldrá en la respuesta: así se filtra `raw_score`.
+    quality_band:QualityBand=Field()
+    confidence:float=Field(ge=0,le=1)
+    model_version:str=Field()
+    preprocessing_version:str=Field()
     # TODO S9.1b: el modelo devuelve la confianza con todos sus decimales; el
     # contrato público la expone con dos. Investiga `@field_serializer` de
     # Pydantic v2: la decisión pertenece al contrato, no al predictor.
     # Comprobación: tests/test_s9_1_output_contract.py
+    @field_serializer("confidence")
+    @classmethod
+    def _two_decimals(self, value: float) -> float:
+        return round(value, 2)
+
 
 
 class PredictionResponse(BaseModel):
@@ -87,7 +96,14 @@ class PredictionResponse(BaseModel):
     # nuevo `served_at: datetime`. Serialízalo en UTC, ISO 8601 y con sufijo
     # `Z` (por ejemplo `2026-10-20T09:15:00.123Z`). Añadir un campo es un
     # cambio compatible: ¿qué parte de la versión de la API debes subir?
-
+    prediction: Prediction
+    request_id: str
+    served_at: datetime
+    @field_serializer("served_at")
+    @classmethod
+    def _serialize_served_at(cls,dt:datetime)->str:
+        return dt.strftime("%Y-%m-%dT%H:%M:%S.") + f"{dt.microsecond // 1000:03d}Z"
+    
 
 class HealthResponse(BaseModel):
     """Estado del servicio y del modelo cargado."""

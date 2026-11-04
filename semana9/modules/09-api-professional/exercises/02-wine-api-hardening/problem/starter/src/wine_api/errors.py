@@ -72,6 +72,7 @@ async def handle_validation_error(
     # - Si no, 422 con `ErrorCode.VALIDATION_ERROR` y una lista de FieldError
     #   (usa `field_path`). Nunca copies `input`: puede contener datos del
     #   usuario. Comprobación: tests/test_s9_2_errors.py
+    
     raise NotImplementedError("TODO S9.2a")
 
 

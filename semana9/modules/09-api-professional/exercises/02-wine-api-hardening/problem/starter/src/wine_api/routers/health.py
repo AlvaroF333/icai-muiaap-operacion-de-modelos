@@ -13,16 +13,16 @@ router = APIRouter()
 # cuándo usar el endpoint y qué significa un 503. Documenta el 503 con
 # `responses={503: {"model": ErrorResponse, "description": ...}}`.
 @router.get("/health")
-def read_health(predictor: PredictorDep, request_id: RequestIdDep):
+def read_health(predictor: PredictorDep, request_id: RequestIdDep) -> HealthResponse:
     # TODO S9.2f: sustituye el HTTPException por `ModelUnavailableError`: el
     # dominio no debería saber de HTTP y el manejador produce el sobre común.
     if not predictor.is_ready():
         raise HTTPException(status_code=503, detail="Model not ready")
-    # TODO S9.1d: declara `-> HealthResponse` y devuelve una instancia.
-    return {
-        "status": "ok",
-        "service": SERVICE_NAME,
-        "model_status": "ready",
-        "model_version": predictor.model_version,
-        "request_id": request_id,
-    }
+    # S9.1d: devuelve una instancia tipada en vez de un dict.
+    return HealthResponse(
+        status="ok",
+        service=SERVICE_NAME,
+        model_status="ready",
+        model_version=predictor.model_version,
+        request_id=request_id,
+    )
