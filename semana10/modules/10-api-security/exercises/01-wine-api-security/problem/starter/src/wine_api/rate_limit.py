@@ -6,18 +6,33 @@ producción el estado va a Redis o el límite lo aplica el API gateway.
 """
 
 import logging
-import math  # noqa: F401 - pista para S10.4b
+import math
 import threading
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Annotated
 
-from fastapi import Depends, Request, Response  # noqa: F401 - pista para S10.4c
+from fastapi import Depends, Request, Response
 
+from wine_api.errors import RateLimitExceededError
+from wine_api.schemas import ErrorResponse
 from wine_api.security import ClientDep
 
 logger = logging.getLogger("wine_api.rate_limit")
+
+RATE_LIMIT_RESPONSES: dict[int | str, dict] = {
+    429: {
+        "model": ErrorResponse,
+        "description": "Cuota agotada. Espera los segundos de `Retry-After`.",
+        "headers": {
+            "Retry-After": {
+                "description": "Segundos que faltan para que se abra la ventana.",
+                "schema": {"type": "integer"},
+            }
+        },
+    },
+}
 
 
 @dataclass(frozen=True)
@@ -33,7 +48,6 @@ class FixedWindowRateLimiter:
     """Cuenta peticiones por clave en ventanas de `window_seconds`.
 
     `clock` es inyectable para que los tests avancen el tiempo sin esperar.
-    `_windows` guarda, por clave, `(inicio de la ventana, peticiones contadas)`.
     """
 
     def __init__(
@@ -50,17 +64,22 @@ class FixedWindowRateLimiter:
     def hit(self, key: str, limit: int) -> RateLimitDecision:
         """Cuenta una petición de `key` si cabe en su cuota de `limit`."""
 
-        # TODO S10.4b: implementa la ventana fija dentro de `with self._lock:`.
-        # - Si la ventana de `key` no existe o ya ha pasado `window_seconds`
-        #   desde su inicio, empieza una nueva en `self.clock()`.
-        # - Si ya hay `limit` peticiones, deniega SIN contar y calcula
-        #   `retry_after`: segundos enteros que faltan para que acabe la
-        #   ventana. ¿Por qué hay que redondear hacia arriba y no hacia abajo?
-        # - Si cabe, cuenta la petición y devuelve cuántas quedan.
-        # Usa `self.clock()`, nunca `time.time()`: así los tests controlan el
-        # reloj. Mira `usage()` para ver cómo se lee `_windows`.
-        # Comprobación: los tres primeros tests de tests/test_s10_4_rate_limit.py
-        raise NotImplementedError("TODO S10.4b")
+        with self._lock:
+            now = self.clock()
+            start, count = self._windows.get(key, (now, 0))
+            if now - start >= self.window_seconds:
+                start, count = now, 0
+            if count >= limit:
+                remaining_window = self.window_seconds - (now - start)
+                return RateLimitDecision(
+                    allowed=False,
+                    remaining=0,
+                    retry_after=math.ceil(remaining_window),
+                )
+            self._windows[key] = (start, count + 1)
+            return RateLimitDecision(
+                allowed=True, remaining=limit - count - 1, retry_after=0
+            )
 
     def usage(self, key: str) -> int:
         """Peticiones contadas para `key` en la ventana actual."""
@@ -81,16 +100,16 @@ def get_rate_limiter(request: Request) -> FixedWindowRateLimiter:
 RateLimiterDep = Annotated[FixedWindowRateLimiter, Depends(get_rate_limiter)]
 
 
-def enforce_rate_limit(client: ClientDep, limiter: RateLimiterDep) -> None:
+def enforce_rate_limit(
+    client: ClientDep, limiter: RateLimiterDep, response: Response
+) -> None:
     """Cuenta la petición del cliente autenticado o lanza un `429`."""
 
-    # TODO S10.4c: cuenta la petición con `limiter.hit(...)` usando el nombre
-    # del cliente como clave y su `rate_limit_per_minute` como límite.
-    # - Si no se permite, lanza `RateLimitExceededError` con `Retry-After`.
-    # - Si se permite, añade a la respuesta `X-RateLimit-Limit` y
-    #   `X-RateLimit-Remaining`. Investiga en la documentación de FastAPI
-    #   «Response - Change Headers»: una dependencia también puede recibir
-    #   `response: Response`.
-    # ¿Por qué esta dependencia va DESPUÉS de autenticar y autorizar?
-    # Comprobación: uv run pytest -q tests/test_s10_4_rate_limit.py
-    raise NotImplementedError("TODO S10.4c")
+    decision = limiter.hit(client.name, client.rate_limit_per_minute)
+    if not decision.allowed:
+        logger.warning("Rate limit exceeded for client %s", client.name)
+        raise RateLimitExceededError(
+            retry_after=decision.retry_after, limit=client.rate_limit_per_minute
+        )
+    response.headers["X-RateLimit-Limit"] = str(client.rate_limit_per_minute)
+    response.headers["X-RateLimit-Remaining"] = str(decision.remaining)

@@ -1,6 +1,35 @@
 {
   "components": {
     "schemas": {
+      "ClientUsage": {
+        "description": "Consumo de un cliente en la ventana actual del rate limit.",
+        "properties": {
+          "client": {
+            "description": "Nombre del cliente; nunca su clave.",
+            "title": "Client",
+            "type": "string"
+          },
+          "limit": {
+            "description": "Peticiones permitidas por minuto.",
+            "exclusiveMinimum": 0.0,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "requests_in_window": {
+            "description": "Peticiones contadas en la ventana actual.",
+            "minimum": 0.0,
+            "title": "Requests In Window",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "client",
+          "requests_in_window",
+          "limit"
+        ],
+        "title": "ClientUsage",
+        "type": "object"
+      },
       "ErrorCode": {
         "description": "Códigos estables: el cliente programa contra ellos, no contra el texto.",
         "enum": [
@@ -9,6 +38,9 @@
           "not_found",
           "method_not_allowed",
           "http_error",
+          "unauthorized",
+          "forbidden",
+          "rate_limited",
           "model_unavailable",
           "internal_error"
         ],
@@ -243,6 +275,41 @@
         "title": "QualityBand",
         "type": "string"
       },
+      "UsageResponse": {
+        "description": "Respuesta de `GET /v1/admin/usage`.",
+        "examples": [
+          {
+            "clients": [
+              {
+                "client": "front",
+                "limit": 60,
+                "requests_in_window": 3
+              }
+            ],
+            "request_id": "req_3f9a1c2b7d4e"
+          }
+        ],
+        "properties": {
+          "clients": {
+            "items": {
+              "$ref": "#/components/schemas/ClientUsage"
+            },
+            "title": "Clients",
+            "type": "array"
+          },
+          "request_id": {
+            "description": "Identificador para correlacionar logs.",
+            "title": "Request Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "clients",
+          "request_id"
+        ],
+        "title": "UsageResponse",
+        "type": "object"
+      },
       "WineFeatures": {
         "additionalProperties": false,
         "description": "Once variables fisicoquímicas de un vino tinto, con rangos inclusivos.",
@@ -341,13 +408,21 @@
         "title": "WineFeatures",
         "type": "object"
       }
+    },
+    "securitySchemes": {
+      "APIKeyHeader": {
+        "description": "API key del cliente. La entrega el equipo de operación.",
+        "in": "header",
+        "name": "X-API-Key",
+        "type": "apiKey"
+      }
     }
   },
   "info": {
-    "description": "\nServicio de inferencia del proyecto **Wine Quality** de Operación de Modelos.\n\n- Todas las respuestas incluyen `request_id` y la cabecera `X-Request-Id`.\n- Todos los errores comparten el sobre `ErrorResponse`; programa contra\n  `error.code`, no contra `error.message`.\n- La predicción es determinista y docente: no es una garantía de calidad.\n",
+    "description": "\nServicio de inferencia del proyecto **Wine Quality** de Operación de Modelos.\n\n- `POST /v1/predictions` y `/v1/admin/*` exigen la cabecera `X-API-Key`; pulsa\n  **Authorize** para probarlos desde aquí. `GET /health` es público.\n- Cada clave tiene scopes (`predict`, `admin`) y una cuota por minuto: un `429`\n  trae `Retry-After` con los segundos que hay que esperar.\n- Todas las respuestas incluyen `request_id` y la cabecera `X-Request-Id`.\n- Todos los errores comparten el sobre `ErrorResponse`; programa contra\n  `error.code`, no contra `error.message`.\n- La predicción es determinista y docente: no es una garantía de calidad.\n",
     "summary": "Predicción de la banda de calidad de vinos tintos.",
     "title": "Wine Quality API",
-    "version": "1.1.0"
+    "version": "2.0.0"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -383,9 +458,56 @@
         ]
       }
     },
+    "/v1/admin/usage": {
+      "get": {
+        "description": "Devuelve, por cliente, cuántas predicciones lleva en la ventana actual.\n\n- Requiere la cabecera `X-API-Key` de un cliente con scope `admin`.\n- Identifica a los clientes por su nombre; las claves nunca se devuelven.\n- El contador es del proceso que responde: con varias réplicas, cada una\n  informa de lo suyo.",
+        "operationId": "read_usage_v1_admin_usage_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageResponse"
+                }
+              }
+            },
+            "description": "Peticiones de cada cliente en la ventana actual."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Falta la cabecera `X-API-Key` o la clave no es válida."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "La clave es válida, pero no tiene el scope necesario."
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "summary": "Consultar el consumo de cada cliente",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
     "/v1/predictions": {
       "post": {
-        "description": "Estima la banda de calidad a partir de once variables fisicoquímicas.\n\n- Todos los campos son obligatorios y numéricos; no se aceptan booleanos,\n  textos ni campos extra.\n- Los rangos son inclusivos y están en el esquema `WineFeatures`.\n- `confidence` se devuelve con dos decimales.\n- Guarda `request_id` si necesitas reportar una incidencia.",
+        "description": "Estima la banda de calidad a partir de once variables fisicoquímicas.\n\n- Requiere la cabecera `X-API-Key` de un cliente con scope `predict`.\n- Cada cliente tiene una cuota por minuto; las respuestas `200` indican lo\n  que queda en `X-RateLimit-Remaining` y los `429` cuánto esperar en\n  `Retry-After`.\n- Todos los campos son obligatorios y numéricos; no se aceptan booleanos,\n  textos ni campos extra.\n- Los rangos son inclusivos y están en el esquema `WineFeatures`.\n- `confidence` se devuelve con dos decimales.\n- Guarda `request_id` si necesitas reportar una incidencia.",
         "operationId": "create_prediction_v1_predictions_post",
         "requestBody": {
           "content": {
@@ -477,6 +599,26 @@
             },
             "description": "El cuerpo no es JSON válido."
           },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Falta la cabecera `X-API-Key` o la clave no es válida."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "La clave es válida, pero no tiene el scope necesario."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -486,6 +628,24 @@
               }
             },
             "description": "JSON válido que incumple campos, tipos o rangos."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Cuota agotada. Espera los segundos de `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "description": "Segundos que faltan para que se abra la ventana.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           },
           "503": {
             "content": {
@@ -498,6 +658,11 @@
             "description": "El modelo no está cargado."
           }
         },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
         "summary": "Predecir la banda de calidad de un vino",
         "tags": [
           "predictions"
@@ -513,6 +678,10 @@
     {
       "description": "Inferencia de calidad de vino tinto.",
       "name": "predictions"
+    },
+    {
+      "description": "Operación del servicio; exige scope `admin`.",
+      "name": "admin"
     }
   ]
 }

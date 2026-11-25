@@ -149,10 +149,9 @@ class ErrorCode(StrEnum):
     NOT_FOUND = "not_found"
     METHOD_NOT_ALLOWED = "method_not_allowed"
     HTTP_ERROR = "http_error"
-    # TODO S10.2a: añade los tres códigos estables de esta semana:
-    # `unauthorized`, `forbidden` y `rate_limited`. Un cliente programa contra
-    # `error.code`: ¿qué haría el front con cada uno (pedir clave, avisar de
-    # permisos, esperar `Retry-After`)?
+    UNAUTHORIZED = "unauthorized"
+    FORBIDDEN = "forbidden"
+    RATE_LIMITED = "rate_limited"
     MODEL_UNAVAILABLE = "model_unavailable"
     INTERNAL_ERROR = "internal_error"
 

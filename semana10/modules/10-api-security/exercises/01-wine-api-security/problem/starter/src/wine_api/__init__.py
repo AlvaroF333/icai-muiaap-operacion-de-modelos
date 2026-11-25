@@ -1,1 +1,1 @@
-"""Wine Quality API: punto de partida de S10 (la API 1.1.0 de S9)."""
+"""Wine Quality API: servicio de inferencia protegido en S10 (2.0.0)."""
